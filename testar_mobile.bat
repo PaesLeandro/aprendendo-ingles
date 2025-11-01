@@ -50,7 +50,7 @@ for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr "IPv4"') do (
     ping -n 1 !ip! >nul
     if !errorlevel! equ 0 (
         echo   ✅ !ip! - Acessível
-        echo   📱 URL: http://!ip!:8080/main.html
+    echo   📱 URL: http://!ip!:8080/main-standalone.html
     ) else (
         echo   ❌ !ip! - Não acessível
     )
@@ -61,10 +61,10 @@ for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr "IPv4"') do (
 echo.
 echo � SUGESTÕES DE URL PARA TESTE:
 echo ════════════════════════════════════════
-echo 🏠 WiFi Local:    http://192.168.1.100:8080/main.html
-echo 📡 Ethernet:      http://192.168.56.1:8080/main.html  
-echo 🔥 Hotspot:       http://192.168.137.1:8080/main.html
-echo ⚡ Alternativa:   http://localhost:8080/main.html
+echo 🏠 WiFi Local:    http://192.168.1.100:8080/main-standalone.html
+echo 📡 Ethernet:      http://192.168.56.1:8080/main-standalone.html  
+echo 🔥 Hotspot:       http://192.168.137.1:8080/main-standalone.html
+echo ⚡ Alternativa:   http://localhost:8080/main-standalone.html
 echo.
 
 echo 💡 DICAS DE SOLUÇÃO:

@@ -9,7 +9,12 @@ const MemoryGame = ({ onComplete, onBack }) => {
         { id: 3, english: 'Green', portuguese: 'Verde', color: '#00FF00' },
         { id: 4, english: 'Yellow', portuguese: 'Amarelo', color: '#FFFF00' },
         { id: 5, english: 'Orange', portuguese: 'Laranja', color: '#FFA500' },
-        { id: 6, english: 'Purple', portuguese: 'Roxo', color: '#800080' }
+        { id: 6, english: 'Purple', portuguese: 'Roxo', color: '#800080' },
+        { id: 7, english: 'Black', portuguese: 'Preto', color: '#000000' },
+        { id: 8, english: 'White', portuguese: 'Branco', color: '#FFFFFF' },
+        { id: 9, english: 'Pink', portuguese: 'Rosa', color: '#FFC0CB' },
+        { id: 10, english: 'Brown', portuguese: 'Marrom', color: '#A52A2A' }
+
     ];
 
     const [cards, setCards] = useState([]);

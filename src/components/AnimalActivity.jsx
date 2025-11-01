@@ -9,7 +9,14 @@ const AnimalActivity = ({ onComplete, onBack }) => {
         { name: 'Sheep', portuguese: 'Ovelha', emoji: '🐑', sound: 'Baa' },
         { name: 'Horse', portuguese: 'Cavalo', emoji: '🐴', sound: 'Neigh' },
         { name: 'Chicken', portuguese: 'Galinha', emoji: '🐔', sound: 'Cluck' },
-        { name: 'Duck', portuguese: 'Pato', emoji: '🦆', sound: 'Quack' }
+        { name: 'Duck', portuguese: 'Pato', emoji: '🦆', sound: 'Quack' },
+        { name: 'Goat', portuguese: 'Cabra', emoji: '🐐', sound: 'Bleat' },
+        { name: 'Elephant', portuguese: 'Elefante', emoji: '🐘', sound: 'Trumpet' },
+        { name: 'Dog', portuguese: 'Cachorro', emoji: '🐕', sound: 'Bark' },
+        { name: 'Cat', portuguese: 'Gato', emoji: '🐈', sound: 'Meow' },
+        { name: 'Rabbit', portuguese: 'Coelho', emoji: '🐇', sound: 'Squeak' },
+        { name: 'Pig', portuguese: 'Porco', emoji: '🐷', sound: 'Oink' },
+        { name: 'Cow', portuguese: 'Vaca', emoji: '🐄', sound: 'Moo' }
     ];
 
     const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);

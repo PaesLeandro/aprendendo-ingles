@@ -1,0 +1,14 @@
+# Dependências (pasta gigante que não deve ir para o GitHub)
+/node_modules
+
+# Build (pasta que o Netlify gera, não o código-fonte)
+/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de ambiente (contêm senhas)
+.env
+.env.local

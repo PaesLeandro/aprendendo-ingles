@@ -3,10 +3,10 @@
 
 ✅ STATUS ATUAL:
 - Servidor Python rodando corretamente na porta 8080
-- Acesso local funcionando: http://localhost:8080/main.html
+- Acesso local funcionando: http://localhost:8080/main-standalone.html
 - Acesso de rede funcionando nos IPs:
-  📱 http://192.168.56.1:8080/main.html
-  📱 http://192.168.10.5:8080/main.html
+  📱 http://192.168.56.1:8080/main-standalone.html
+  📱 http://192.168.10.5:8080/main-standalone.html
 
 🔧 O QUE FOI CORRIGIDO:
 1. ✅ Servidor Python iniciado no diretório correto

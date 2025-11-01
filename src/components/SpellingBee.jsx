@@ -13,7 +13,12 @@ const SpellingBee = ({ onComplete, onBack }) => {
         { word: 'MOUNTAIN', portuguese: 'Montanha', difficulty: 3, category: 'Natureza', emoji: '⛰️' },
         { word: 'COMPUTER', portuguese: 'Computador', difficulty: 3, category: 'Tecnologia', emoji: '💻' },
         { word: 'PENCIL', portuguese: 'Lápis', difficulty: 2, category: 'Escola', emoji: '✏️' },
-        { word: 'BACKPACK', portuguese: 'Mochila', difficulty: 3, category: 'Escola', emoji: '🎒' }
+        { word: 'BACKPACK', portuguese: 'Mochila', difficulty: 3, category: 'Escola', emoji: '🎒' },
+        { word: 'GUITAR', portuguese: 'Guitarra', difficulty: 2, category: 'Música', emoji: '🎸' },
+        { word: 'DRUM', portuguese: 'Bateria', difficulty: 2, category: 'Música', emoji: '🥁' },
+        { word: 'VIOLIN', portuguese: 'Violino', difficulty: 3, category: 'Música', emoji: '🎻' },
+        { word: 'THUNDER', portuguese: 'Trovão', difficulty: 2, category: 'Natureza', emoji: '🌩️' },
+        { word: 'LIGHTNING', portuguese: 'Relâmpago', difficulty: 3, category: 'Natureza', emoji: '⚡' }
     ];
 
     const [currentWordIndex, setCurrentWordIndex] = useState(0);

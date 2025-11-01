@@ -15,13 +15,16 @@ HOST = '0.0.0.0'
 MOBILE_HOTSPOT_PORT = 8081  # Porta alternativa para hotspot
 
 # Classe customizada para servidor HTTP
+
+
 class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         # Adicionar headers para melhor compatibilidade móvel
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
-        self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        self.send_header(
+            'Cache-Control', 'no-cache, no-store, must-revalidate')
         super().end_headers()
 
     def log_message(self, format_str, *args):
@@ -30,47 +33,51 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         message = f"📱 {client_ip} - {format_str % args}"
         print(message)
 
+
 def detect_network_type():
     """Detectar se está conectado via WiFi ou dados móveis"""
     try:
         # Executar comando para obter informações de rede
-        result = subprocess.run(['netsh', 'wlan', 'show', 'profiles'], 
+        result = subprocess.run(['netsh', 'wlan', 'show', 'profiles'],
                               capture_output=True, text=True, shell=True)
-        
+
         if result.returncode == 0 and result.stdout:
             # Verificar se há conexão WiFi ativa
-            wifi_result = subprocess.run(['netsh', 'wlan', 'show', 'interfaces'], 
+            wifi_result = subprocess.run(['netsh', 'wlan', 'show', 'interfaces'],
                                        capture_output=True, text=True, shell=True)
-            
+
             if wifi_result.returncode == 0 and 'Estado' in wifi_result.stdout:
                 if 'conectado' in wifi_result.stdout.lower() or 'connected' in wifi_result.stdout.lower():
                     return 'wifi'
-            
+
         # Verificar se há conexão de dados móveis/hotspot
-        adapter_result = subprocess.run(['ipconfig'], capture_output=True, text=True, shell=True)
+        adapter_result = subprocess.run(
+            ['ipconfig'], capture_output=True, text=True, shell=True)
         if 'Mobile' in adapter_result.stdout or 'Hotspot' in adapter_result.stdout:
             return 'mobile'
-            
+
         return 'ethernet'
-        
+
     except Exception as e:
         print(f"⚠️ Erro ao detectar tipo de rede: {e}")
         return 'unknown'
 
+
 def get_all_network_interfaces():
     """Obter todas as interfaces de rede disponíveis"""
     interfaces = {}
-    
+
     try:
         # Obter informações do ipconfig
-        result = subprocess.run(['ipconfig', '/all'], capture_output=True, text=True, shell=True)
-        
+        result = subprocess.run(['ipconfig', '/all'],
+                                capture_output=True, text=True, shell=True)
+
         current_adapter = None
         current_ip = None
-        
+
         for line in result.stdout.split('\n'):
             line = line.strip()
-            
+
             # Detectar novo adaptador
             if 'Adaptador' in line or 'Adapter' in line:
                 if 'Wi-Fi' in line or 'WiFi' in line:
@@ -83,7 +90,7 @@ def get_all_network_interfaces():
                     current_adapter = 'mobile'
                 else:
                     current_adapter = 'other'
-            
+
             # Capturar IPv4
             if 'IPv4' in line and '192.168.' in line:
                 parts = line.split(':')
@@ -91,10 +98,10 @@ def get_all_network_interfaces():
                     ip = parts[1].strip()
                     if current_adapter and ip:
                         interfaces[current_adapter] = ip
-                        
+
     except Exception as e:
         print(f"⚠️ Erro ao obter interfaces: {e}")
-    
+
     return interfaces
 
 
@@ -122,6 +129,7 @@ def get_local_ips():
         pass
 
     return ips
+
 
 def create_mobile_hotspot_instructions():
     """Criar instruções para usar hotspot móvel"""
@@ -152,76 +160,80 @@ netsh wlan set hostednetwork mode=allow ssid="LittleEnglish" key="12345678"
 netsh wlan start hostednetwork
 """
 
+
 def start_multiple_servers():
     """Iniciar servidores em múltiplas portas para diferentes cenários"""
     servers = []
-    
+
     # Servidor principal (WiFi/Ethernet)
     try:
-        server1 = socketserver.TCPServer((HOST, PORT), CustomHTTPRequestHandler)
+        server1 = socketserver.TCPServer(
+            (HOST, PORT), CustomHTTPRequestHandler)
         server1.allow_reuse_address = True
         servers.append(('Principal', PORT, server1))
         print(f"✅ Servidor WiFi/Ethernet iniciado na porta {PORT}")
     except Exception as e:
         print(f"❌ Erro no servidor principal: {e}")
-    
+
     # Servidor para hotspot móvel
     try:
-        server2 = socketserver.TCPServer((HOST, MOBILE_HOTSPOT_PORT), CustomHTTPRequestHandler)
+        server2 = socketserver.TCPServer(
+            (HOST, MOBILE_HOTSPOT_PORT), CustomHTTPRequestHandler)
         server2.allow_reuse_address = True
         servers.append(('Hotspot', MOBILE_HOTSPOT_PORT, server2))
         print(f"✅ Servidor Hotspot iniciado na porta {MOBILE_HOTSPOT_PORT}")
     except Exception as e:
         print(f"❌ Erro no servidor hotspot: {e}")
-    
+
     return servers
 
 
 def main():
     # Verificar se estamos no diretório correto
-    if not os.path.exists('main.html'):
-        print("❌ Erro: main.html não encontrado no diretório atual!")
+    if not os.path.exists('main-standalone.html'):
+        print("❌ Erro: main-standalone.html não encontrado no diretório atual!")
         print(f"📁 Diretório atual: {os.getcwd()}")
         sys.exit(1)
 
     print("🚀 Little English Explorer - Servidor Universal")
     print("=" * 60)
-    
+
     # Detectar tipo de rede
     network_type = detect_network_type()
     interfaces = get_all_network_interfaces()
     local_ips = get_local_ips()
-    
+
     print(f"🔍 Tipo de rede detectado: {network_type.upper()}")
     print()
-    
+
     # Mostrar interfaces disponíveis
     if interfaces:
         print("🌐 Interfaces de rede encontradas:")
         for interface_type, ip in interfaces.items():
             print(f"   {interface_type.upper()}: {ip}")
         print()
-    
+
     # Escolher modo de operação
     def main():
     """Função principal"""
     print("� Little English Explorer - Servidor Universal")
     print("=" * 60)
-    
+
     # Detecta tipo de rede
     network_type = detect_network_type()
     print(f"🔍 Tipo de rede detectado: {network_type.upper()}")
     print()
-    
+
     # Obtém todas as interfaces de rede
     interfaces = get_all_network_interfaces()
-    local_ips = [ip for ip in interfaces.values() if ip and not ip.startswith('127.')]
-    
+    local_ips = [ip for ip in interfaces.values(
+    ) if ip and not ip.startswith('127.')]
+
     print("🌐 Interfaces de rede encontradas:")
     for interface_type, ip in interfaces.items():
         if ip and not ip.startswith('127.'):
             print(f"   {interface_type}: {ip}(Preferencial)")
-    
+
     # Verifica se foi passado argumento para modo automático
     auto_mode = None
     if len(sys.argv) > 1:
@@ -229,7 +241,7 @@ def main():
             auto_mode = int(sys.argv[1])
         except ValueError:
             pass
-    
+
     if auto_mode:
         choice = str(auto_mode)
         print(f"
@@ -295,12 +307,12 @@ def start_wifi_server(local_ips):
             print("=" * 45)
             
             print("💻 Acesso Local:")
-            print(f"   http://localhost:{PORT}/main.html")
+            print(f"   http://localhost:{PORT}/main-standalone.html")
             print()
             
             print("📱 Acesso WiFi (celular na mesma rede):")
             for ip in local_ips:
-                print(f"   http://{ip}:{PORT}/main.html")
+                print(f"   http://{ip}:{PORT}/main-standalone.html")
             print()
             
             print("📋 Instruções:")
@@ -368,17 +380,17 @@ def start_universal_server(local_ips, interfaces):
     print()
     
     # URLs WiFi
-    if local_ips:
+        if local_ips:
         print("🏠 MODO WIFI (mesma rede):")
         for ip in local_ips:
-            print(f"   http://{ip}:{PORT}/main.html")
+            print(f"   http://{ip}:{PORT}/main-standalone.html")
         print()
     
     # URLs Hotspot
     print("🔥 MODO HOTSPOT (dados móveis):")
     print(f"   Porta {MOBILE_HOTSPOT_PORT} - Configure hotspot primeiro")
     for ip in local_ips:
-        print(f"   http://{ip}:{MOBILE_HOTSPOT_PORT}/main.html")
+        print(f"   http://{ip}:{MOBILE_HOTSPOT_PORT}/main-standalone.html")
     print()
     
     # Instruções gerais
@@ -413,16 +425,16 @@ def start_universal_server(local_ips, interfaces):
         print(f"❌ Erro: {e}")
 
 def verificar_arquivo_principal():
-    """Verifica se o main.html existe"""
+    """Verifica se o main-standalone.html existe"""
     # Muda para o diretório do script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
     
-    if not os.path.exists('main.html'):
-        print("❌ Erro: main.html não encontrado no diretório do script!")
+    if not os.path.exists('main-standalone.html'):
+        print("❌ Erro: main-standalone.html não encontrado no diretório do script!")
         print(f"📁 Diretório do script: {script_dir}")
         return False
-    print(f"✅ main.html encontrado em: {script_dir}")
+    print(f"✅ main-standalone.html encontrado em: {script_dir}")
     return True
 
 if __name__ == "__main__":

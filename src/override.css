@@ -1,0 +1,96 @@
+:root {
+    --ui-card-border: rgba(99, 102, 241, 0.08);
+    --ui-card-border-hover: rgba(99, 102, 241, 0.15);
+    --ui-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+}
+
+/* Layout tweaks */
+.app-container {
+    background: linear-gradient(180deg, #f7f6ff 0%, #efe6ff 30%, #e7e0ff 60%) !important;
+    padding-bottom: 96px !important;
+}
+
+/* Cards */
+.activity-card {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%) !important;
+    border-radius: 14px !important;
+    padding: 18px !important;
+    box-shadow: var(--ui-shadow) !important;
+    border: 1px solid var(--ui-card-border) !important;
+    transition: transform 220ms ease, box-shadow 220ms ease !important;
+}
+
+.activity-card:hover {
+    transform: translateY(-6px) scale(1.01) !important;
+    box-shadow: 0 18px 40px rgba(16, 24, 40, 0.12) !important;
+    border-color: var(--ui-card-border-hover) !important;
+}
+
+/* Buttons */
+.big-button {
+    min-height: 52px !important;
+    font-size: 16px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 6px 14px rgba(16, 24, 40, 0.06) !important;
+}
+
+.big-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 30px rgba(16, 24, 40, 0.12) !important;
+}
+
+/* Bottom navigation: floating, rounded */
+.footer-nav {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-radius: 12px !important;
+    padding: 10px 14px !important;
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.06) !important;
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    z-index: 60 !important;
+}
+
+.nav-item {
+    gap: 6px !important;
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
+    min-width: 64px !important;
+}
+
+.nav-item:hover {
+    background: rgba(243, 244, 246, 0.9) !important;
+    transform: translateY(-3px) !important;
+}
+
+/* Progress bar: rounded gradient */
+.progress-bar {
+    height: 10px !important;
+    background: linear-gradient(90deg, #f1f5f9, #eef2ff) !important;
+    border-radius: 999px !important;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, #7c3aed, #a78bfa) !important;
+    border-radius: 999px !important;
+    transition: width 320ms cubic-bezier(.2, .9, .2, 1) !important;
+}
+
+/* Small responsive tweak */
+@media (max-width: 640px) {
+    .activity-card {
+        padding: 14px !important;
+    }
+
+    .big-button {
+        min-height: 46px !important;
+        font-size: 15px !important;
+    }
+
+    .footer-nav {
+        left: 8px !important;
+        right: 8px !important;
+        bottom: 10px !important;
+    }
+}

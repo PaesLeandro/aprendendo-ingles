@@ -11,11 +11,11 @@ for /f "tokens=2 delims=:" %%a in ('ipconfig ^| find "IPv4"') do echo    %%a
 echo.
 
 echo 🌐 Testando servidor local...
-powershell -Command "try { $response = Invoke-WebRequest -Uri 'http://localhost:8080/main.html' -TimeoutSec 5; Write-Host '✅ Servidor local funcionando!' -ForegroundColor Green } catch { Write-Host '❌ Servidor local não responde' -ForegroundColor Red }"
+powershell -Command "try { $response = Invoke-WebRequest -Uri 'http://localhost:8080/main-standalone.html' -TimeoutSec 5; Write-Host '✅ Servidor local funcionando!' -ForegroundColor Green } catch { Write-Host '❌ Servidor local não responde' -ForegroundColor Red }"
 echo.
 
 echo 📡 Testando acesso externo...
-powershell -Command "try { $response = Invoke-WebRequest -Uri 'http://192.168.10.10:8080/main.html' -TimeoutSec 5; Write-Host '✅ Acesso externo funcionando!' -ForegroundColor Green } catch { Write-Host '❌ Acesso externo bloqueado' -ForegroundColor Red }"
+powershell -Command "try { $response = Invoke-WebRequest -Uri 'http://192.168.10.10:8080/main-standalone.html' -TimeoutSec 5; Write-Host '✅ Acesso externo funcionando!' -ForegroundColor Green } catch { Write-Host '❌ Acesso externo bloqueado' -ForegroundColor Red }"
 echo.
 
 echo 🔥 Verificando Firewall...
@@ -29,8 +29,8 @@ if %errorlevel% equ 0 (
 echo.
 
 echo 📱 URLs para dispositivos móveis:
-echo    http://localhost:8080/main.html (computador)
-for /f "tokens=2 delims=:" %%a in ('ipconfig ^| find "IPv4"') do echo    http://%%a:8080/main.html (celular/tablet)
+echo    http://localhost:8080/main-standalone.html (computador)
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| find "IPv4"') do echo    http://%%a:8080/main-standalone.html (celular/tablet)
 echo.
 
 echo 🎯 Para usar no celular:

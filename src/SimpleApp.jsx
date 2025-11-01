@@ -1,5 +1,23 @@
 import React from 'react';
 
+// --- 1. FUNÇÃO ADICIONADA ---
+// Esta função será chamada quando um emoji for clicado
+const handleEmojiClick = (emoji) => {
+  console.log("Clicou no emoji:", emoji);
+
+  // Ação de exemplo (substitua pela sua lógica)
+  alert(`Você clicou no ${emoji}!`);
+
+  // Você pode adicionar sua lógica aqui, por exemplo:
+  // if (emoji === "🎨") {
+  //   // navegue para a página de cores
+  // }
+};
+
+// --- 2. LISTA ADICIONADA ---
+// É uma boa prática definir os dados fora do return
+const emojis = ['🎨', '🐸', '🔢', '👨‍👩‍👧‍👦', '🎮', '🎵', '🏆'];
+
 function SimpleApp() {
     return (
         <div style={{
@@ -35,15 +53,26 @@ function SimpleApp() {
                         flexWrap: 'wrap',
                         justifyContent: 'center'
                     }}>
-                        {['🎨', '🐸', '🔢', '👨‍👩‍👧‍👦', '🎮', '🎵', '🏆'].map((emoji, index) => (
-                            <div key={index} style={{
-                                fontSize: '3rem',
-                                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                                padding: '15px',
-                                borderRadius: '15px',
-                                transition: 'transform 0.3s ease',
-                                cursor: 'pointer'
-                            }}>
+                        {/* --- 3. CORREÇÃO NO MAP --- */}
+                        {emojis.map((emoji, index) => ( // Usei a lista de emojis
+                            <div 
+                                key={index} 
+                                
+                                // --- 4. A CORREÇÃO PRINCIPAL ESTÁ AQUI ---
+                                onClick={() => handleEmojiClick(emoji)}
+                                
+                                // Efeito de hover (bônus)
+                                onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+                                onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}
+                                
+                                style={{
+                                    fontSize: '3rem',
+                                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                    padding: '15px',
+                                    borderRadius: '15px',
+                                    transition: 'transform 0.3s ease',
+                                    cursor: 'pointer' // Seu cursor
+                                }}>
                                 {emoji}
                             </div>
                         ))}

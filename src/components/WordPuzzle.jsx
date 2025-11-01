@@ -11,7 +11,18 @@ const WordPuzzle = ({ onComplete, onBack }) => {
         { word: 'HOUSE', portuguese: 'Casa', hint: 'Lugar onde você mora', emoji: '🏠' },
         { word: 'TREE', portuguese: 'Árvore', hint: 'Planta grande com folhas', emoji: '🌳' },
         { word: 'FLOWER', portuguese: 'Flor', hint: 'Planta colorida e perfumada', emoji: '🌸' },
-        { word: 'BOOK', portuguese: 'Livro', hint: 'Tem páginas para ler', emoji: '📚' }
+        { word: 'BOOK', portuguese: 'Livro', hint: 'Tem páginas para ler', emoji: '📚' },
+        { word: 'CAR', portuguese: 'Carro', hint: 'Veículo com quatro rodas', emoji: '🚗' },
+        { word: 'SUN', portuguese: 'Sol', hint: 'Estrela que ilumina o dia', emoji: '☀️' },
+        { word: 'MOON', portuguese: 'Lua', hint: 'Astro que brilha à noite', emoji: '🌙' },
+        { word: 'STAR', portuguese: 'Estrela', hint: 'Brilha no céu à noite', emoji: '⭐' },
+        { word: 'CLOUD', portuguese: 'Nuvem', hint: 'Flutua no céu e traz chuva', emoji: '☁️' },
+        { word: 'RAIN', portuguese: 'Chuva', hint: 'Água que cai do céu', emoji: '🌧️' },
+        { word: 'SNOW', portuguese: 'Neve', hint: 'Cristais de gelo que caem do céu', emoji: '❄️' },
+        { word: 'WIND', portuguese: 'Vento', hint: 'Ar em movimento', emoji: '💨' },
+        { word: 'RAINBOW', portuguese: 'Arco-íris', hint: 'Fenômeno óptico com várias cores', emoji: '🌈' },
+        { word: 'LIGHTNING', portuguese: 'Relâmpago', hint: 'Descarga elétrica durante tempestades', emoji: '⚡' },
+        { word: 'THUNDER', portuguese: 'Trovão', hint: 'Som alto durante tempestades', emoji: '🌩️' }
     ];
 
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -24,7 +35,8 @@ const WordPuzzle = ({ onComplete, onBack }) => {
     const [showHint, setShowHint] = useState(false);
     const [mistakes, setMistakes] = useState(0);
 
-    const currentWord = puzzleWords[currentWordIndex];
+    // Evita erro se puzzleWords estiver vazio
+    const currentWord = puzzleWords[currentWordIndex]; 
 
     // Timer effect
     useEffect(() => {
@@ -39,6 +51,7 @@ const WordPuzzle = ({ onComplete, onBack }) => {
 
     // Embaralhar letras da palavra atual
     const scrambleWord = (word) => {
+        if (!word) return []; // Proteção caso a palavra não exista
         const letters = word.split('');
         // Adicionar algumas letras extras aleatórias
         const extraLetters = ['A', 'E', 'I', 'O', 'U', 'B', 'C', 'D', 'F', 'G'];
@@ -56,6 +69,7 @@ const WordPuzzle = ({ onComplete, onBack }) => {
 
     // Inicializar palavra atual
     const initializeCurrentWord = () => {
+        if (!currentWord) return; // Proteção para não travar no fim
         const scrambled = scrambleWord(currentWord.word);
         setScrambledLetters(scrambled);
         setSelectedLetters([]);
@@ -70,25 +84,27 @@ const WordPuzzle = ({ onComplete, onBack }) => {
         setGameStarted(false);
         setGameCompleted(false);
         setMistakes(0);
-        initializeCurrentWord();
+        // O useEffect de currentWordIndex vai chamar o initializeCurrentWord
     };
 
     useEffect(() => {
+        // Inicializa o jogo apenas na primeira vez que o componente é montado
         initializeGame();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // A array de dependências vazia [] garante que isso rode só uma vez
 
     useEffect(() => {
+        // Isso roda quando o jogo começa E toda vez que o index da palavra muda
         if (currentWordIndex < puzzleWords.length) {
             initializeCurrentWord();
         }
-    }, [currentWordIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentWordIndex]); // Depende do índice da palavra
 
     // Adicionar letra selecionada
     const addLetter = (letter, index) => {
         if (!gameStarted) {
             setGameStarted(true);
         }
-
         setSelectedLetters(prev => [...prev, { letter, originalIndex: index }]);
         setScrambledLetters(prev => prev.filter((_, i) => i !== index));
     };
@@ -96,7 +112,9 @@ const WordPuzzle = ({ onComplete, onBack }) => {
     // Remover letra selecionada
     const removeLetter = (index) => {
         const letterData = selectedLetters[index];
+        if (!letterData) return; // Proteção contra cliques rápidos
         setSelectedLetters(prev => prev.filter((_, i) => i !== index));
+        // Adiciona a letra de volta ao array de letras disponíveis
         setScrambledLetters(prev => [...prev, letterData.letter]);
     };
 
@@ -130,8 +148,7 @@ const WordPuzzle = ({ onComplete, onBack }) => {
             setMistakes(prev => prev + 1);
             // Resetar seleção após um tempo
             setTimeout(() => {
-                setScrambledLetters(scrambleWord(currentWord.word));
-                setSelectedLetters([]);
+                initializeCurrentWord(); // Reseta para a palavra atual
             }, 1000);
         }
     };
@@ -165,9 +182,7 @@ const WordPuzzle = ({ onComplete, onBack }) => {
                 <div className="activity-card max-w-md mx-auto">
                     <div className="text-6xl mb-4">🎉</div>
                     <h2 className="text-title mb-4">Parabéns!</h2>
-                    <p className="text-subtitle mb-4">
-                        Você completou todas as palavras!
-                    </p>
+                    <p className="text-subtitle mb-4">Você completou todas as palavras!</p>
 
                     <div className="grid grid-cols-2 gap-4 mb-6">
                         <div className="activity-card text-center">
@@ -207,25 +222,24 @@ const WordPuzzle = ({ onComplete, onBack }) => {
             </div>
         );
     }
+    
+    // Proteção caso currentWord ainda não esteja carregado
+    if (!currentWord) {
+        return <div>Carregando jogo...</div>;
+    }
 
     return (
         <div className="content-wrapper p-6">
             {/* Header do Jogo */}
             <div className="flex items-center justify-between mb-6">
-                <button
-                    className="big-button secondary-button"
-                    onClick={onBack}
-                >
+                <button className="big-button secondary-button" onClick={onBack}>
                     ← Voltar
                 </button>
                 <div className="text-center">
                     <h2 className="text-subtitle">Quebra-cabeça de Palavras</h2>
                     <p className="text-body">Palavra {currentWordIndex + 1} de {puzzleWords.length}</p>
                 </div>
-                <button
-                    className="big-button star-button"
-                    onClick={initializeGame}
-                >
+                <button className="big-button star-button" onClick={initializeGame}>
                     <RotateCcw className="icon-medium" />
                 </button>
             </div>
@@ -257,9 +271,7 @@ const WordPuzzle = ({ onComplete, onBack }) => {
                     <p className="text-title mb-2">{currentWord.portuguese}</p>
 
                     {showHint && (
-                        <p className="text-body text-gray-600 mb-4">
-                            💡 {currentWord.hint}
-                        </p>
+                        <p className="text-body text-gray-600 mb-4">💡 {currentWord.hint}</p>
                     )}
 
                     <button
@@ -284,9 +296,7 @@ const WordPuzzle = ({ onComplete, onBack }) => {
                     <div className="flex justify-center mb-4">
                         <div className="flex gap-2 min-h-16 items-center justify-center flex-wrap">
                             {selectedLetters.length === 0 && (
-                                <div className="text-gray-400 text-center py-4">
-                                    Clique nas letras abaixo para formar a palavra
-                                </div>
+                                <div className="text-gray-400 text-center py-4">Clique nas letras abaixo para formar a palavra</div>
                             )}
                             {selectedLetters.map((letterData, index) => (
                                 <button
@@ -309,21 +319,25 @@ const WordPuzzle = ({ onComplete, onBack }) => {
                         >
                             ✓ Verificar
                         </button>
+
+                        {/* --- ✅ BUG CORRIGIDO --- */}
                         <button
                             className="big-button secondary-button"
                             onClick={() => {
-                                setScrambledLetters(scrambleWord(currentWord.word));
-                                setSelectedLetters([]);
+                                // 1. Embaralha APENAS as letras que sobraram
+                                setScrambledLetters(prevLetters => 
+                                    [...prevLetters].sort(() => Math.random() - 0.5)
+                                );
+                                // 2. NÃO mexe mais nas letras selecionadas
                             }}
                         >
                             <RotateCcw className="icon-medium" />
                             Embaralhar
                         </button>
+                        {/* --- FIM DA CORREÇÃO --- */}
+
                         {!showHint && (
-                            <button
-                                className="big-button star-button"
-                                onClick={useHint}
-                            >
+                            <button className="big-button star-button" onClick={useHint}>
                                 <Lightbulb className="icon-medium" />
                                 Dica
                             </button>

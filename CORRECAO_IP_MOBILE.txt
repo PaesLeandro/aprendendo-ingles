@@ -2,11 +2,11 @@
 ===============================================
 
 ❌ IP INCORRETO QUE NÃO FUNCIONA:
-   http://192.168.10.10:8080/main.html
+   http://192.168.10.10:8080/main-standalone.html
 
 ✅ IPs CORRETOS PARA USAR NO CELULAR:
-   📱 http://192.168.10.5:8080/main.html  (WiFi Principal)
-   📱 http://192.168.56.1:8080/main.html  (Ethernet)
+   📱 http://192.168.10.5:8080/main-standalone.html  (WiFi Principal)
+   📱 http://192.168.56.1:8080/main-standalone.html  (Ethernet)
 
 🔍 DIAGNÓSTICO ATUAL:
 - Servidor Python ativo na porta 8080 ✅
@@ -22,10 +22,10 @@
    - Chrome, Firefox, Safari, etc.
 
 3. DIGITE O IP CORRETO:
-   http://192.168.10.5:8080/main.html
+   http://192.168.10.5:8080/main-standalone.html
 
 4. SE NÃO FUNCIONAR, TENTE O SEGUNDO IP:
-   http://192.168.56.1:8080/main.html
+   http://192.168.56.1:8080/main-standalone.html
 
 🔥 CONFIGURAR FIREWALL (SE NECESSÁRIO):
 Execute como Administrador:
@@ -46,6 +46,6 @@ Execute para diagnóstico:
 - Servidor respondendo em ambos os IPs
 
 ═══════════════════════════════════════════════════════════════
-✅ USE: http://192.168.10.5:8080/main.html
-❌ NÃO USE: http://192.168.10.10:8080/main.html
+✅ USE: http://192.168.10.5:8080/main-standalone.html
+❌ NÃO USE: http://192.168.10.10:8080/main-standalone.html
 ═══════════════════════════════════════════════════════════════

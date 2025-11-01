@@ -30,9 +30,9 @@
 📱 COMO ACESSAR NO CELULAR:
 
 1. SERVIDOR ESTÁ RODANDO EM:
-   💻 Computador: http://localhost:8080/main.html
-   📱 Celular: http://192.168.56.1:8080/main.html
-   📱 Celular: http://192.168.10.5:8080/main.html
+   💻 Computador: http://localhost:8080/main-standalone.html
+   📱 Celular: http://192.168.56.1:8080/main-standalone.html
+   📱 Celular: http://192.168.10.5:8080/main-standalone.html
 
 2. CONFIGURAR FIREWALL (COMO ADMINISTRADOR):
    Abra cmd como Administrador e execute:

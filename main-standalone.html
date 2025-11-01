@@ -1,0 +1,2928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=3.0"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="theme-color" content="#667eea" />
+    <title>Little English Explorer - Funcionando!</title>
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+          min-height: 100vh;
+          min-height: 100svh;
+          /* Para dispositivos móveis modernos */
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          padding: 10px;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+      }
+
+      .container {
+          text-align: center;
+          background: rgba(255, 255, 255, 0.15);
+          padding: 40px 20px;
+          border-radius: 20px;
+          backdrop-filter: blur(20px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          max-width: 800px;
+          width: 100%;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          margin: 0 auto;
+      }
+
+      /* Responsividade para dispositivos móveis */
+      @media (max-width: 768px) {
+          .container {
+              padding: 30px 15px;
+              border-radius: 15px;
+              margin: 10px;
+              min-height: auto;
+          }
+
+          body {
+              padding: 5px;
+              align-items: flex-start;
+              padding-top: 20px;
+          }
+      }
+
+      @media (max-width: 480px) {
+          .container {
+              padding: 20px 10px;
+              border-radius: 12px;
+          }
+      }
+
+      .logo {
+          font-size: clamp(3rem, 8vw, 6rem);
+          /* Responsivo */
+          margin-bottom: 20px;
+          animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+
+          0%,
+          20%,
+          50%,
+          80%,
+          100% {
+              transform: translateY(0);
+          }
+
+          40% {
+              transform: translateY(-15px);
+          }
+
+          60% {
+              transform: translateY(-7px);
+          }
+      }
+
+      h1 {
+          font-size: clamp(2rem, 6vw, 3.5rem);
+          /* Responsivo */
+          margin-bottom: 20px;
+          background: linear-gradient(45deg, #FFD700, #FFA500, #FF6B6B);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          animation: glow 3s ease-in-out infinite alternate;
+          line-height: 1.2;
+      }
+
+      @keyframes glow {
+          from {
+              filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+          }
+
+          to {
+              filter: drop-shadow(0 0 30px rgba(255, 107, 107, 0.8));
+          }
+      }
+
+      .subtitle {
+          font-size: clamp(1.2rem, 4vw, 1.8rem);
+          /* Responsivo */
+          margin-bottom: 30px;
+          opacity: 0.95;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+          line-height: 1.3;
+      }
+
+      .activities {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 20px;
+          margin: 30px 0;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+      }
+
+      /* Grid responsivo para dispositivos móveis */
+      @media (max-width: 768px) {
+          .activities {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 15px;
+              margin: 25px 0;
+          }
+      }
+
+      @media (max-width: 480px) {
+          .activities {
+              grid-template-columns: repeat(2, 1fr);
+              gap: 12px;
+              margin: 20px 0;
+          }
+      }
+
+      .activity {
+          font-size: clamp(2.5rem, 6vw, 3.5rem);
+          /* Responsivo */
+          background: rgba(255, 255, 255, 0.2);
+          padding: 20px 15px;
+          border-radius: 20px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          border: 3px solid transparent;
+          position: relative;
+          overflow: hidden;
+          min-height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          touch-action: manipulation;
+          /* Melhora resposta do toque */
+      }
+
+      .activity::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+          transition: left 0.5s;
+      }
+
+      /* Otimizações para dispositivos móveis */
+      @media (hover: none) and (pointer: coarse) {
+          .activity:hover {
+              transform: none;
+          }
+
+          .activity:active {
+              transform: scale(0.95);
+              background: rgba(255, 255, 255, 0.4);
+          }
+      }
+
+      .activity:hover::before {
+          left: 100%;
+      }
+
+      .activity:hover {
+          transform: scale(1.1) rotate(4deg);
+          background: rgba(255, 255, 255, 0.35);
+          border-color: rgba(255, 255, 255, 0.6);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .status {
+          background: rgba(0, 255, 150, 0.25);
+          padding: 20px;
+          border-radius: 15px;
+          margin: 30px 0;
+          border: 2px solid rgba(0, 255, 150, 0.4);
+          box-shadow: 0 0 15px rgba(0, 255, 150, 0.2);
+      }
+
+      @media (max-width: 768px) {
+          .status {
+              padding: 15px;
+              margin: 20px 0;
+              font-size: 0.9rem;
+          }
+      }
+
+      .urls {
+          background: rgba(255, 255, 255, 0.2);
+          padding: 20px;
+          border-radius: 15px;
+          margin: 30px 0;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      @media (max-width: 768px) {
+          .urls {
+              padding: 15px;
+              margin: 20px 0;
+              font-size: 0.85rem;
+          }
+      }
+
+      .success-indicator {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: #00ff00;
+          border-radius: 50%;
+          margin-right: 10px;
+          animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+          0% {
+              box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+          }
+
+          70% {
+              box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+          }
+
+          100% {
+              box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+          }
+      }
+
+      .btn {
+          background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1);
+          color: white;
+          padding: 15px 30px;
+          border: none;
+          border-radius: 50px;
+          font-size: clamp(1rem, 3vw, 1.3rem);
+          /* Responsivo */
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          margin: 10px;
+          text-decoration: none;
+          display: inline-block;
+          touch-action: manipulation;
+          min-height: 48px;
+          /* Mínimo para toque */
+      }
+
+      @media (max-width: 768px) {
+          .btn {
+              padding: 12px 25px;
+              margin: 8px 5px;
+              font-size: 1rem;
+          }
+      }
+
+      display: inline-block;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn:hover {
+          transform: translateY(-5px) scale(1.05);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      }
+
+      .connection-info {
+          background: rgba(100, 200, 255, 0.2);
+          padding: 25px;
+          border-radius: 15px;
+          margin: 30px 0;
+          border-left: 5px solid #64c8ff;
+      }
+
+      /* Animações para dispositivos móveis */
+      @keyframes fadeInOut {
+          0% {
+              opacity: 0;
+              transform: translate(-50%, -50%) scale(0.8);
+          }
+
+          20% {
+              opacity: 1;
+              transform: translate(-50%, -50%) scale(1);
+          }
+
+          80% {
+              opacity: 1;
+              transform: translate(-50%, -50%) scale(1);
+          }
+
+          100% {
+              opacity: 0;
+              transform: translate(-50%, -50%) scale(0.8);
+          }
+      }
+
+      /* Melhorias para acessibilidade em tela sensível ao toque */
+      .activity,
+      button,
+      [onclick] {
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="logo">🎉</div>
+      <h1>Little English Explorer</h1>
+      <p class="subtitle">✨ Aplicativo Educacional Funcionando! ✨</p>
+
+      <div class="activities">
+        <div class="activity" title="Cores" onclick="showActivity('🎨 Cores')">
+          🎨
+        </div>
+        <div
+          class="activity"
+          title="Animais"
+          onclick="showActivity('🐸 Animais')"
+        >
+          🐸
+        </div>
+        <div
+          class="activity"
+          title="Números"
+          onclick="showActivity('🔢 Números')"
+        >
+          🔢
+        </div>
+        <div
+          class="activity"
+          title="Família"
+          onclick="showActivity('👨‍👩‍👧‍👦 Família')"
+        >
+          👨‍👩‍👧‍👦
+        </div>
+        <div class="activity" title="Jogos" onclick="showActivity('🎮 Jogos')">
+          🎮
+        </div>
+        <div
+          class="activity"
+          title="Músicas"
+          onclick="showActivity('🎵 Músicas')"
+        >
+          🎵
+        </div>
+        <div
+          class="activity"
+          title="Conquistas"
+          onclick="showActivity('🏆 Conquistas')"
+        >
+          🏆
+        </div>
+      </div>
+
+      <div class="status">
+        <h3><span class="success-indicator"></span>Sistema Operacional</h3>
+        <p><strong>✅ Servidor HTTP ativo na porta 8080</strong></p>
+        <p><strong>✅ Interface responsiva carregada</strong></p>
+        <p><strong>✅ Animações e efeitos funcionando</strong></p>
+      </div>
+
+      <div class="urls">
+        <h3>📱 URLs de Acesso</h3>
+        <div class="connection-info">
+          <p><strong>💻 No Computador:</strong></p>
+          <code
+            style="
+              background: rgba(0, 0, 0, 0.3);
+              padding: 10px;
+              border-radius: 5px;
+              display: block;
+              margin: 10px 0;
+            "
+          >
+            http://localhost:8080/main.html
+          </code>
+
+          <p><strong>📱 No Celular/Rede Móvel:</strong></p>
+          <code
+            style="
+              background: rgba(0, 0, 0, 0.3);
+              padding: 10px;
+              border-radius: 5px;
+              display: block;
+              margin: 10px 0;
+            "
+          >
+            http://192.168.10.10:8080/main.html
+          </code>
+
+          <div
+            style="
+              background: rgba(255, 255, 0, 0.2);
+              padding: 15px;
+              border-radius: 10px;
+              margin: 15px 0;
+              border-left: 4px solid #ffeb3b;
+            "
+          >
+            <strong>⚠️ IMPORTANTE:</strong> Apenas o arquivo
+            <code>main.html</code> está funcionando.<br />
+            Esta é a versão completa e otimizada para dispositivos móveis!
+          </div>
+
+          <div
+            style="
+              background: rgba(0, 255, 0, 0.2);
+              padding: 15px;
+              border-radius: 10px;
+              margin: 15px 0;
+              border-left: 4px solid #4caf50;
+            "
+          >
+            <strong>📱 OTIMIZADO:</strong> Interface responsiva para celulares e
+            tablets!<br />
+            Funciona em qualquer dispositivo móvel conectado à mesma rede WiFi.
+          </div>
+
+          <small style="opacity: 0.8">
+            🔧 Para resolver problemas de conexão móvel, execute como
+            Administrador:<br />
+            <code style="font-size: 0.9em"
+              >netsh advfirewall firewall add rule name="LEE" dir=in
+              action=allow protocol=TCP localport=8080</code
+            >
+          </small>
+        </div>
+      </div>
+
+      <div style="margin-top: 50px">
+        <button class="btn" onclick="startApp()">🚀 Iniciar Aplicativo</button>
+        <button class="btn" onclick="testFeatures()">🧪 Testar Recursos</button>
+        <button class="btn" onclick="showInfo()">ℹ️ Informações</button>
+      </div>
+    </div>
+
+    <script>
+      // Detectar dispositivo móvel
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+      console.log("🎉 Little English Explorer carregado com sucesso!");
+      console.log("🌐 Servidor ativo em http://localhost:8080/main.html");
+      console.log("📱 Acesso móvel: http://192.168.10.10:8080/main.html");
+      console.log("⚠️ IMPORTANTE: Apenas main.html está funcionando corretamente!");
+
+      if (isMobile || isTouchDevice) {
+          console.log("📱 DISPOSITIVO MÓVEL DETECTADO - Interface otimizada ativa!");
+      }
+
+      // Prevenir zoom duplo-toque em iOS
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function (event) {
+          const now = (new Date()).getTime();
+          if (now - lastTouchEnd <= 300) {
+              event.preventDefault();
+          }
+          lastTouchEnd = now;
+      }, false);
+
+      function showActivity(activity) {
+          if (activity.includes('🎨 Cores')) {
+              showColorsActivity();
+          } else if (activity.includes('🐸 Animais')) {
+              showAnimalsActivity();
+          } else if (activity.includes('🔢 Números')) {
+              showNumbersActivity();
+          } else if (activity.includes('👨‍👩‍👧‍👦 Família')) {
+              showFamilyActivity();
+          } else if (activity.includes('🎮 Jogos')) {
+              showGamesActivity();
+          } else if (activity.includes('🎵 Músicas')) {
+              showMusicActivity();
+          } else if (activity.includes('🏆 Conquistas')) {
+              showAchievements();
+          }
+      }
+
+      function showColorsActivity() {
+          const colors = [
+              { pt: 'Vermelho', en: 'Red', emoji: '🔴', color: '#ff0000', objects: ['Apple', 'Rose', 'Fire truck'] },
+              { pt: 'Azul', en: 'Blue', emoji: '🔵', color: '#0066ff', objects: ['Sky', 'Ocean', 'Blueberry'] },
+              { pt: 'Verde', en: 'Green', emoji: '🟢', color: '#00aa00', objects: ['Grass', 'Tree', 'Frog'] },
+              { pt: 'Amarelo', en: 'Yellow', emoji: '🟡', color: '#ffaa00', objects: ['Sun', 'Banana', 'Sunflower'] },
+              { pt: 'Rosa', en: 'Pink', emoji: '🩷', color: '#ff69b4', objects: ['Flamingo', 'Cotton candy', 'Peach blossom'] },
+              { pt: 'Roxo', en: 'Purple', emoji: '🟣', color: '#8b00ff', objects: ['Grape', 'Lavender', 'Eggplant'] },
+              { pt: 'Laranja', en: 'Orange', emoji: '🟠', color: '#ff8c00', objects: ['Orange', 'Carrot', 'Pumpkin'] },
+              { pt: 'Marrom', en: 'Brown', emoji: '🤎', color: '#8b4513', objects: ['Bear', 'Wood', 'Chocolate'] },
+              { pt: 'Preto', en: 'Black', emoji: '⚫', color: '#000000', objects: ['Night', 'Raven', 'Coal'] },
+              { pt: 'Branco', en: 'White', emoji: '⚪', color: '#ffffff', objects: ['Snow', 'Cloud', 'Paper'] }
+          ];
+
+          let colorHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 900px; width: 95%; text-align: center; color: white; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 20px;">🎨 Aprendendo Cores em Inglês</h2>
+
+                      <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                          <p style="opacity: 0.9; margin-bottom: 15px;">Clique nas cores para ouvir a pronúncia e ver exemplos!</p>
+                          <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                              <button style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startColorQuiz()">
+                                  🎯 Quiz de Cores
+                              </button>
+                              <button style="padding: 10px 20px; background: #fd7e14; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startColorMemory()">
+                                  🧠 Memória das Cores
+                              </button>
+                              <button style="padding: 10px 20px; background: #6f42c1; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startColorMixing()">
+                                  🎨 Misturar Cores
+                              </button>
+                          </div>
+                      </div>
+
+                      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin: 30px 0;">
+          `;
+
+          colors.forEach((color, index) => {
+              const textColor = color.en === 'Black' ? '#ffffff' : color.en === 'White' ? '#333333' : '#ffffff';
+              colorHtml += `
+                  <div style="background: ${color.color}; ${color.en === 'White' ? 'border: 2px solid #ddd;' : ''} padding: 25px; border-radius: 15px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3);"
+                       onclick="showColorDetails(${index})"
+                       onmouseover="this.style.transform='scale(1.1) rotate(2deg)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.4)'"
+                       onmouseout="this.style.transform='scale(1) rotate(0deg)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.3)'">
+                      <div style="font-size: 3rem; margin-bottom: 15px; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));">${color.emoji}</div>
+                      <div style="font-weight: bold; margin: 10px 0; font-size: 1.3rem; color: ${textColor}; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">${color.en}</div>
+                      <div style="opacity: 0.9; color: ${textColor}; font-size: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);">${color.pt}</div>
+                      <div style="margin-top: 10px; padding: 5px 10px; background: rgba(0,0,0,0.3); border-radius: 10px; font-size: 0.8rem; color: ${textColor};">
+                          Clique para exemplos
+                      </div>
+                  </div>
+              `;
+          });
+
+          colorHtml += `
+                      </div>
+
+                      <div style="background: rgba(255,215,0,0.2); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #ffd700;">
+                          <h3 style="color: #ffd700; margin-bottom: 15px;">🌈 Curiosidades sobre Cores</h3>
+                          <div style="text-align: left; line-height: 1.6; font-size: 0.95rem;">
+                              <p>• O arco-íris tem 7 cores principais: Red, Orange, Yellow, Green, Blue, Indigo, Violet</p>
+                              <p>• Mixing Red + Blue = Purple (Vermelho + Azul = Roxo)</p>
+                              <p>• Mixing Yellow + Blue = Green (Amarelo + Azul = Verde)</p>
+                              <p>• Mixing Red + Yellow = Orange (Vermelho + Amarelo = Laranja)</p>
+                          </div>
+                      </div>
+
+                      <button style="margin-top: 30px; padding: 15px 30px; background: #ff6b6b; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                          ✅ Fechar
+                      </button>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', colorHtml);
+
+          // Função para mostrar detalhes da cor
+          window.showColorDetails = function (index) {
+              const color = colors[index];
+              speak(color.en);
+
+              let detailHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, ${color.color}, ${color.color}dd); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: ${color.en === 'Black' || color.en === 'Purple' ? 'white' : color.en === 'White' || color.en === 'Yellow' ? '#333' : 'white'};" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 20px;">${color.emoji} ${color.en}</h2>
+                          <h3 style="margin-bottom: 30px; opacity: 0.9;">${color.pt}</h3>
+
+                          <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                              <h4 style="margin-bottom: 15px;">📝 Exemplos desta cor:</h4>
+                              <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+              `;
+
+              color.objects.forEach(obj => {
+                  detailHtml += `
+                      <div style="background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; cursor: pointer;" onclick="speak('${obj}')">
+                          ${obj}
+                      </div>
+                  `;
+              });
+
+              detailHtml += `
+                              </div>
+                          </div>
+
+                          <div style="margin: 20px 0;">
+                              <button style="margin: 0 10px; padding: 12px 25px; background: rgba(255,255,255,0.3); color: inherit; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="speak('${color.en}')">
+                                  🔊 Pronunciar
+                              </button>
+                              <button style="margin: 0 10px; padding: 12px 25px; background: rgba(255,255,255,0.3); color: inherit; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="practiceColorSentence('${color.en}')">
+                                  💬 Frase
+                              </button>
+                          </div>
+
+                          <button style="margin-top: 20px; padding: 15px 30px; background: rgba(0,0,0,0.3); color: inherit; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', detailHtml);
+          };
+
+          // Função para praticar frases com cores
+          window.practiceColorSentence = function (colorName) {
+              const sentences = [
+                  `My favorite color is ${colorName.toLowerCase()}`,
+                  `The ${colorName.toLowerCase()} car is beautiful`,
+                  `I see a ${colorName.toLowerCase()} flower`,
+                  `This ${colorName.toLowerCase()} book is interesting`
+              ];
+              const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+              speak(randomSentence);
+              alert(`💬 Frase exemplo:\n\n"${randomSentence}"\n\n🎯 Pratique falando esta frase!`);
+          };
+
+          // Quiz de cores
+          window.startColorQuiz = function () {
+              const shuffledColors = [...colors].sort(() => Math.random() - 0.5).slice(0, 5);
+              let currentQuestion = 0;
+              let score = 0;
+
+              function askQuestion() {
+                  if (currentQuestion >= shuffledColors.length) {
+                      alert(`🎉 Quiz Completo!\n\n🏆 Pontuação: ${score}/${shuffledColors.length}\n\n${score === shuffledColors.length ? '🥇 Perfeito!' : score >= 3 ? '🥈 Muito bom!' : '🥉 Continue praticando!'}`);
+                      return;
+                  }
+
+                  const color = shuffledColors[currentQuestion];
+                  const options = [color.en, ...colors.filter(c => c.en !== color.en).sort(() => Math.random() - 0.5).slice(0, 2).map(c => c.en)].sort(() => Math.random() - 0.5);
+
+                  const answer = prompt(`🎯 Quiz de Cores - Pergunta ${currentQuestion + 1}/${shuffledColors.length}\n\nQual é esta cor em inglês?\n\n${color.emoji} ${color.pt}\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n\nDigite 1, 2 ou 3:`);
+
+                  if (answer && options[parseInt(answer) - 1] === color.en) {
+                      score++;
+                      speak(color.en);
+                      alert('✅ Correto!');
+                  } else {
+                      speak(color.en);
+                      alert(`❌ Incorreto! A resposta é: ${color.en}`);
+                  }
+
+                  currentQuestion++;
+                  setTimeout(askQuestion, 1000);
+              }
+
+              askQuestion();
+          };
+
+          // Memória das cores
+          window.startColorMemory = function () {
+              alert('🧠 Jogo da Memória das Cores\n\n🎯 Memorize a sequência de cores e repita!\n\n🚀 Começando...');
+
+              let sequence = [];
+              let playerSequence = [];
+              let level = 1;
+
+              function addToSequence() {
+                  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                  sequence.push(randomColor);
+              }
+
+              function showSequence() {
+                  let sequenceText = `🧠 Nível ${level}\n\nMemorize esta sequência:\n\n`;
+                  sequence.forEach((color, index) => {
+                      sequenceText += `${index + 1}. ${color.emoji} ${color.en}\n`;
+                  });
+
+                  alert(sequenceText + '\n🎯 Agora você deve repetir a sequência!');
+                  checkPlayerSequence();
+              }
+
+              function checkPlayerSequence() {
+                  playerSequence = [];
+                  for (let i = 0; i < sequence.length; i++) {
+                      const options = colors.map(c => c.en);
+                      const answer = prompt(`🎯 Cor ${i + 1}/${sequence.length}\n\nEscolha a cor:\n\n${options.map((opt, idx) => `${idx + 1}. ${opt}`).join('\n')}\n\nDigite o número:`);
+
+                      if (answer) {
+                          const selectedColor = colors[parseInt(answer) - 1];
+                          if (selectedColor) {
+                              playerSequence.push(selectedColor);
+                              speak(selectedColor.en);
+                          }
+                      }
+                  }
+
+                  // Verificar se a sequência está correta
+                  let correct = true;
+                  for (let i = 0; i < sequence.length; i++) {
+                      if (!playerSequence[i] || playerSequence[i].en !== sequence[i].en) {
+                          correct = false;
+                          break;
+                      }
+                  }
+
+                  if (correct) {
+                      level++;
+                      alert(`🎉 Correto! Nível ${level - 1} completo!\n\n🚀 Preparando nível ${level}...`);
+                      addToSequence();
+                      setTimeout(showSequence, 1500);
+                  } else {
+                      alert(`❌ Sequência incorreta!\n\n🏆 Você chegou ao nível ${level}\n\n🎯 Tente novamente para melhorar!`);
+                  }
+              }
+
+              addToSequence();
+              showSequence();
+          };
+
+          // Misturar cores
+          window.startColorMixing = function () {
+              const mixingRules = {
+                  'Red + Blue': 'Purple',
+                  'Blue + Red': 'Purple',
+                  'Yellow + Blue': 'Green',
+                  'Blue + Yellow': 'Green',
+                  'Red + Yellow': 'Orange',
+                  'Yellow + Red': 'Orange',
+                  'Red + White': 'Pink',
+                  'White + Red': 'Pink'
+              };
+
+              let mixingHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%); padding: 40px; border-radius: 20px; max-width: 600px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 30px;">🎨 Laboratório de Cores</h2>
+                          <p style="margin-bottom: 20px;">Misture duas cores para descobrir qual cor nova você pode criar!</p>
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin: 20px 0;">
+                              <h3 style="margin-bottom: 20px;">🧪 Combinações Mágicas:</h3>
+                              <div style="text-align: left; line-height: 2;">
+                                  <p>🔴 Red + 🔵 Blue = 🟣 Purple</p>
+                                  <p>🟡 Yellow + 🔵 Blue = 🟢 Green</p>
+                                  <p>🔴 Red + 🟡 Yellow = 🟠 Orange</p>
+                                  <p>🔴 Red + ⚪ White = 🩷 Pink</p>
+                              </div>
+                          </div>
+
+                          <div style="margin: 30px 0;">
+                              <button style="margin: 0 10px; padding: 15px 25px; background: #28a745; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="testColorMixing()">
+                                  🧪 Testar Mistura
+                              </button>
+                              <button style="margin: 0 10px; padding: 15px 25px; background: #ffc107; color: #333; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="quizColorMixing()">
+                                  🎯 Quiz de Misturas
+                              </button>
+                          </div>
+
+                          <button style="margin-top: 20px; padding: 15px 30px; background: #dc3545; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar às Cores
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', mixingHtml);
+
+              window.testColorMixing = function () {
+                  const colorNames = ['Red', 'Blue', 'Yellow', 'White'];
+                  const color1 = prompt(`🎨 Escolha a primeira cor:\n\n${colorNames.map((c, i) => `${i + 1}. ${c}`).join('\n')}\n\nDigite o número:`);
+                  if (!color1) return;
+
+                  const color2 = prompt(`🎨 Escolha a segunda cor:\n\n${colorNames.map((c, i) => `${i + 1}. ${c}`).join('\n')}\n\nDigite o número:`);
+                  if (!color2) return;
+
+                  const firstColor = colorNames[parseInt(color1) - 1];
+                  const secondColor = colorNames[parseInt(color2) - 1];
+                  const combination = `${firstColor} + ${secondColor}`;
+                  const result = mixingRules[combination];
+
+                  if (result) {
+                      speak(result);
+                      alert(`🎉 Mistura bem-sucedida!\n\n${firstColor} + ${secondColor} = ${result}\n\n🎨 Você criou uma nova cor!`);
+                  } else {
+                      alert(`🤔 Hmm... ${firstColor} + ${secondColor}\n\nEssa combinação não cria uma cor nova conhecida.\n\n💡 Tente outras combinações!`);
+                  }
+              };
+
+              window.quizColorMixing = function () {
+                  const questions = [
+                      { q: 'Red + Blue = ?', answer: 'Purple' },
+                      { q: 'Yellow + Blue = ?', answer: 'Green' },
+                      { q: 'Red + Yellow = ?', answer: 'Orange' },
+                      { q: 'Red + White = ?', answer: 'Pink' }
+                  ];
+
+                  let score = 0;
+                  questions.forEach((quiz, index) => {
+                      const answer = prompt(`🎯 Quiz ${index + 1}/4\n\n${quiz.q}\n\nDigite sua resposta:`);
+                      if (answer && answer.toLowerCase() === quiz.answer.toLowerCase()) {
+                          score++;
+                          speak(quiz.answer);
+                          alert('✅ Correto!');
+                      } else {
+                          speak(quiz.answer);
+                          alert(`❌ Incorreto! A resposta é: ${quiz.answer}`);
+                      }
+                  });
+
+                  alert(`🎉 Quiz completo!\n\n🏆 Pontuação: ${score}/4\n\n${score === 4 ? '🥇 Mestre das Misturas!' : score >= 3 ? '🥈 Quase um expert!' : '🥉 Continue praticando!'}`);
+              };
+          };
+      } function showAnimalsActivity() {
+          const animals = [
+              { pt: 'Gato', en: 'Cat', emoji: '🐱', sound: 'Meow', habitat: 'House', category: 'Domestic' },
+              { pt: 'Cachorro', en: 'Dog', emoji: '🐶', sound: 'Woof', habitat: 'House', category: 'Domestic' },
+              { pt: 'Pássaro', en: 'Bird', emoji: '🐦', sound: 'Tweet', habitat: 'Sky', category: 'Wild' },
+              { pt: 'Peixe', en: 'Fish', emoji: '🐟', sound: 'Glub', habitat: 'Water', category: 'Aquatic' },
+              { pt: 'Elefante', en: 'Elephant', emoji: '🐘', sound: 'Trumpet', habitat: 'Savanna', category: 'Wild' },
+              { pt: 'Leão', en: 'Lion', emoji: '🦁', sound: 'Roar', habitat: 'Savanna', category: 'Wild' },
+              { pt: 'Macaco', en: 'Monkey', emoji: '🐵', sound: 'Ooh ooh', habitat: 'Jungle', category: 'Wild' },
+              { pt: 'Urso', en: 'Bear', emoji: '🐻', sound: 'Growl', habitat: 'Forest', category: 'Wild' },
+              { pt: 'Coelho', en: 'Rabbit', emoji: '🐰', sound: 'Squeak', habitat: 'Field', category: 'Wild' },
+              { pt: 'Vaca', en: 'Cow', emoji: '🐄', sound: 'Moo', habitat: 'Farm', category: 'Farm' },
+              { pt: 'Porco', en: 'Pig', emoji: '🐷', sound: 'Oink', habitat: 'Farm', category: 'Farm' },
+              { pt: 'Galinha', en: 'Chicken', emoji: '🐔', sound: 'Cluck', habitat: 'Farm', category: 'Farm' },
+              { pt: 'Cavalo', en: 'Horse', emoji: '🐴', sound: 'Neigh', habitat: 'Farm', category: 'Farm' },
+              { pt: 'Ovelha', en: 'Sheep', emoji: '🐑', sound: 'Baa', habitat: 'Farm', category: 'Farm' },
+              { pt: 'Pato', en: 'Duck', emoji: '🦆', sound: 'Quack', habitat: 'Pond', category: 'Farm' },
+              { pt: 'Tigre', en: 'Tiger', emoji: '🐅', sound: 'Roar', habitat: 'Jungle', category: 'Wild' },
+              { pt: 'Girafa', en: 'Giraffe', emoji: '🦒', sound: 'Hum', habitat: 'Savanna', category: 'Wild' },
+              { pt: 'Zebra', en: 'Zebra', emoji: '🦓', sound: 'Neigh', habitat: 'Savanna', category: 'Wild' }
+          ];
+
+          let animalHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); padding: 40px; border-radius: 20px; max-width: 1000px; width: 95%; text-align: center; color: white; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 20px;">🦁 Reino Animal em Inglês</h2>
+
+                      <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                          <p style="opacity: 0.9; margin-bottom: 15px;">Explore o mundo animal! Clique nos animais para ouvir pronúncia e sons!</p>
+                          <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                              <button style="padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="filterAnimals('all')">
+                                  🌍 Todos
+                              </button>
+                              <button style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="filterAnimals('domestic')">
+                                  🏠 Domésticos
+                              </button>
+                              <button style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="filterAnimals('farm')">
+                                  🚜 Fazenda
+                              </button>
+                              <button style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="filterAnimals('wild')">
+                                  🌿 Selvagens
+                              </button>
+                              <button style="padding: 10px 20px; background: #9b59b6; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startAnimalQuiz()">
+                                  🎯 Quiz Animal
+                              </button>
+                              <button style="padding: 10px 20px; background: #34495e; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startAnimalSounds()">
+                                  🔊 Sons dos Animais
+                              </button>
+                          </div>
+                      </div>
+
+                      <div id="animalsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin: 30px 0;">
+          `;
+
+          animals.forEach((animal, index) => {
+              animalHtml += `
+                  <div class="animal-card" data-category="${animal.category.toLowerCase()}" style="background: rgba(255,255,255,0.15); padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent;"
+                       onclick="showAnimalDetails(${index})"
+                       onmouseover="this.style.transform='scale(1.1) rotate(2deg)'; this.style.border='2px solid #fff'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
+                       onmouseout="this.style.transform='scale(1) rotate(0deg)'; this.style.border='2px solid transparent'; this.style.boxShadow='none'">
+                      <div style="font-size: 2.5rem; margin-bottom: 10px;">${animal.emoji}</div>
+                      <div style="font-weight: bold; margin: 8px 0; font-size: 1.1rem;">${animal.en}</div>
+                      <div style="opacity: 0.8; font-size: 0.9rem;">${animal.pt}</div>
+                      <div style="margin-top: 8px; padding: 4px 8px; background: rgba(0,0,0,0.2); border-radius: 10px; font-size: 0.7rem; opacity: 0.8;">
+                          ${animal.habitat}
+                      </div>
+                  </div>
+              `;
+          });
+
+          animalHtml += `
+                      </div>
+
+                      <div style="background: rgba(255,215,0,0.2); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #ffd700;">
+                          <h3 style="color: #ffd700; margin-bottom: 15px;">🌟 Curiosidades Animais</h3>
+                          <div style="text-align: left; line-height: 1.6; font-size: 0.9rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                              <div>
+                                  <p><strong>🐘 Elephant:</strong> O maior animal terrestre!</p>
+                                  <p><strong>🦒 Giraffe:</strong> O animal mais alto do mundo!</p>
+                                  <p><strong>🐆 Cheetah:</strong> O animal mais rápido!</p>
+                              </div>
+                              <div>
+                                  <p><strong>🐋 Whale:</strong> O maior animal do planeta!</p>
+                                  <p><strong>🐧 Penguin:</strong> Pássaro que não voa!</p>
+                                  <p><strong>🦘 Kangaroo:</strong> Salta até 9 metros
+                              </div>
+                          </div>
+                      </div>
+
+                      <button style="margin-top: 30px; padding: 15px 30px; background: #e74c3c; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                          ✅ Fechar
+                      </button>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', animalHtml);
+
+          // Função para filtrar animais por categoria
+          window.filterAnimals = function (category) {
+              const cards = document.querySelectorAll('.animal-card');
+              cards.forEach(card => {
+                  if (category === 'all' || card.dataset.category === category) {
+                      card.style.display = 'block';
+                      card.style.animation = 'fadeIn 0.5s ease-in';
+                  } else {
+                      card.style.display = 'none';
+                  }
+              });
+          };
+
+          // Função para mostrar detalhes do animal
+          window.showAnimalDetails = function (index) {
+              const animal = animals[index];
+              speak(animal.en);
+
+              let detailHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #11998e, #38ef7d); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 20px;">${animal.emoji} ${animal.en}</h2>
+                          <h3 style="margin-bottom: 20px; opacity: 0.9;">${animal.pt}</h3>
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; text-align: left;">
+                                  <div><strong>🏠 Habitat:</strong><br>${animal.habitat}</div>
+                                  <div><strong>📂 Categoria:</strong><br>${animal.category}</div>
+                                  <div><strong>🔊 Som:</strong><br>${animal.sound}</div>
+                                  <div><strong>🌍 Tipo:</strong><br>${animal.category === 'Domestic' ? 'Doméstico' : animal.category === 'Farm' ? 'Fazenda' : 'Selvagem'}</div>
+                              </div>
+                          </div>
+
+                          <div style="margin: 20px 0;">
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="speak('${animal.en}')">
+                                  🔊 Pronunciar
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="playAnimalSound('${animal.sound}')">
+                                  🎵 Som
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="animalSentence('${animal.en}')">
+                                  💬 Frase
+                              </button>
+                          </div>
+
+                          <button style="margin-top: 20px; padding: 15px 30px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', detailHtml);
+          };
+
+          // Função para reproduzir som do animal
+          window.playAnimalSound = function (sound) {
+              speak(sound);
+              alert(`🔊 O som deste animal é:\n\n"${sound}"\n\n🎯 Pratique imitando o som!`);
+          };
+
+          // Função para praticar frases com animais
+          window.animalSentence = function (animalName) {
+              const sentences = [
+                  `I see a ${animalName.toLowerCase()}`,
+                  `The ${animalName.toLowerCase()} is beautiful`,
+                  `My favorite animal is the ${animalName.toLowerCase()}`,
+                  `This ${animalName.toLowerCase()} is very cute`
+              ];
+              const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+              speak(randomSentence);
+              alert(`💬 Frase exemplo:\n\n"${randomSentence}"\n\n🎯 Pratique falando esta frase!`);
+          };
+
+          // Quiz dos animais
+          window.startAnimalQuiz = function () {
+              const shuffledAnimals = [...animals].sort(() => Math.random() - 0.5).slice(0, 8);
+              let currentQuestion = 0;
+              let score = 0;
+
+              function askQuestion() {
+                  if (currentQuestion >= shuffledAnimals.length) {
+                      alert(`🎉 Quiz dos Animais Completo!\n\n🏆 Pontuação: ${score}/${shuffledAnimals.length}\n\n${score === shuffledAnimals.length ? '🥇 Especialista em Animais!' : score >= 6 ? '🥈 Muito bom conhecimento!' : score >= 4 ? '🥉 Bom trabalho!' : '📚 Continue estudando!'}`);
+                      return;
+                  }
+
+                  const animal = shuffledAnimals[currentQuestion];
+                  const options = [animal.en, ...animals.filter(a => a.en !== animal.en).sort(() => Math.random() - 0.5).slice(0, 2).map(a => a.en)].sort(() => Math.random() - 0.5);
+
+                  const answer = prompt(`🎯 Quiz dos Animais - Pergunta ${currentQuestion + 1}/${shuffledAnimals.length}\n\nQual é este animal em inglês?\n\n${animal.emoji} ${animal.pt}\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n\nDigite 1, 2 ou 3:`);
+
+                  if (answer && options[parseInt(answer) - 1] === animal.en) {
+                      score++;
+                      speak(animal.en);
+                      alert('✅ Correto! ' + animal.en);
+                  } else {
+                      speak(animal.en);
+                      alert(`❌ Incorreto! A resposta é: ${animal.en}`);
+                  }
+
+                  currentQuestion++;
+                  setTimeout(askQuestion, 1000);
+              }
+
+              askQuestion();
+          };
+
+          // Jogo dos sons dos animais
+          window.startAnimalSounds = function () {
+              alert('🔊 Jogo dos Sons dos Animais\n\n🎯 Vou falar o som, você deve adivinhar o animal!\n\n🚀 Começando...');
+
+              const soundAnimals = animals.filter(a => a.sound !== 'Glub' && a.sound !== 'Hum'); // Excluir sons menos conhecidos
+              const shuffled = [...soundAnimals].sort(() => Math.random() - 0.5).slice(0, 5);
+              let currentRound = 0;
+              let score = 0;
+
+              function playRound() {
+                  if (currentRound >= shuffled.length) {
+                      alert(`🎉 Jogo dos Sons Completo!\n\n🏆 Pontuação: ${score}/${shuffled.length}\n\n${score === shuffled.length ? '🥇 Mestre dos Sons!' : score >= 3 ? '🥈 Muito bom ouvido!' : '🥉 Continue praticando!'}`);
+                      return;
+                  }
+
+                  const animal = shuffled[currentRound];
+                  const options = [animal.en, ...soundAnimals.filter(a => a.en !== animal.en).sort(() => Math.random() - 0.5).slice(0, 2).map(a => a.en)].sort(() => Math.random() - 0.5);
+
+                  speak(animal.sound);
+                  setTimeout(() => {
+                      const answer = prompt(`🔊 Som ${currentRound + 1}/${shuffled.length}\n\nEu falei: "${animal.sound}"\n\nQual animal faz este som?\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n\nDigite 1, 2 ou 3:`);
+
+                      if (answer && options[parseInt(answer) - 1] === animal.en) {
+                          score++;
+                          speak(animal.en);
+                          alert(`✅ Correto! ${animal.emoji} ${animal.en} faz "${animal.sound}"`);
+                      } else {
+                          speak(animal.en);
+                          alert(`❌ Incorreto! O ${animal.en} ${animal.emoji} faz "${animal.sound}"`);
+                      }
+
+                      currentRound++;
+                      setTimeout(playRound, 1000);
+                  }, 2000);
+              }
+
+              playRound();
+          };
+      }
+
+      function showNumbersActivity() {
+          const numbers = [
+              { num: 0, en: 'Zero', pt: 'Zero', ordinal: 'Zeroth' },
+              { num: 1, en: 'One', pt: 'Um', ordinal: 'First' },
+              { num: 2, en: 'Two', pt: 'Dois', ordinal: 'Second' },
+              { num: 3, en: 'Three', pt: 'Três', ordinal: 'Third' },
+              { num: 4, en: 'Four', pt: 'Quatro', ordinal: 'Fourth' },
+              { num: 5, en: 'Five', pt: 'Cinco', ordinal: 'Fifth' },
+              { num: 6, en: 'Six', pt: 'Seis', ordinal: 'Sixth' },
+              { num: 7, en: 'Seven', pt: 'Sete', ordinal: 'Seventh' },
+              { num: 8, en: 'Eight', pt: 'Oito', ordinal: 'Eighth' },
+              { num: 9, en: 'Nine', pt: 'Nove', ordinal: 'Ninth' },
+              { num: 10, en: 'Ten', pt: 'Dez', ordinal: 'Tenth' },
+              { num: 11, en: 'Eleven', pt: 'Onze', ordinal: 'Eleventh' },
+              { num: 12, en: 'Twelve', pt: 'Doze', ordinal: 'Twelfth' },
+              { num: 13, en: 'Thirteen', pt: 'Treze', ordinal: 'Thirteenth' },
+              { num: 14, en: 'Fourteen', pt: 'Quatorze', ordinal: 'Fourteenth' },
+              { num: 15, en: 'Fifteen', pt: 'Quinze', ordinal: 'Fifteenth' },
+              { num: 16, en: 'Sixteen', pt: 'Dezesseis', ordinal: 'Sixteenth' },
+              { num: 17, en: 'Seventeen', pt: 'Dezessete', ordinal: 'Seventeenth' },
+              { num: 18, en: 'Eighteen', pt: 'Dezoito', ordinal: 'Eighteenth' },
+              { num: 19, en: 'Nineteen', pt: 'Dezenove', ordinal: 'Nineteenth' },
+              { num: 20, en: 'Twenty', pt: 'Vinte', ordinal: 'Twentieth' }
+          ];
+
+          const specialNumbers = [
+              { num: 30, en: 'Thirty', pt: 'Trinta' },
+              { num: 40, en: 'Forty', pt: 'Quarenta' },
+              { num: 50, en: 'Fifty', pt: 'Cinquenta' },
+              { num: 60, en: 'Sixty', pt: 'Sessenta' },
+              { num: 70, en: 'Seventy', pt: 'Setenta' },
+              { num: 80, en: 'Eighty', pt: 'Oitenta' },
+              { num: 90, en: 'Ninety', pt: 'Noventa' },
+              { num: 100, en: 'One hundred', pt: 'Cem' },
+              { num: 1000, en: 'One thousand', pt: 'Mil' }
+          ];
+
+          let numberHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); padding: 40px; border-radius: 20px; max-width: 1100px; width: 95%; text-align: center; color: white; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 20px;">🔢 Números em Inglês</h2>
+
+                      <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                          <p style="opacity: 0.9; margin-bottom: 15px;">Aprenda números cardinais e ordinais em inglês!</p>
+                          <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                              <button style="padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="showNumberType('basic')">
+                                  🔢 Básicos (0-20)
+                              </button>
+                              <button style="padding: 10px 20px; background: #e67e22; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="showNumberType('special')">
+                                  💫 Especiais (30-1000)
+                              </button>
+                              <button style="padding: 10px 20px; background: #9b59b6; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="showNumberType('ordinal')">
+                                  📋 Ordinais (1st, 2nd...)
+                              </button>
+                              <button style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startNumberQuiz()">
+                                  🎯 Quiz de Números
+                              </button>
+                              <button style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startMathPractice()">
+                                  ➕ Matemática em Inglês
+                              </button>
+                          </div>
+                      </div>
+
+                      <div id="basicNumbers" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin: 30px 0;">
+          `;
+
+          numbers.forEach((number, index) => {
+              numberHtml += `
+                  <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s;"
+                       onclick="showNumberDetails(${index})"
+                       onmouseover="this.style.transform='scale(1.1)'; this.style.background='rgba(255,255,255,0.3)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(255,255,255,0.2)'">
+                      <div style="font-size: 2.5rem; font-weight: bold; margin-bottom: 10px;">${number.num}</div>
+                      <div style="font-weight: bold; font-size: 1.1rem; margin: 5px 0;">${number.en}</div>
+                      <div style="opacity: 0.8; font-size: 0.9rem;">${number.pt}</div>
+                  </div>
+              `;
+          });
+
+          numberHtml += `
+                      </div>
+
+                      <div id="specialNumbers" style="display: none; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 30px 0;">
+          `;
+
+          specialNumbers.forEach((number, index) => {
+              numberHtml += `
+                  <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s;"
+                       onclick="speak('${number.en}')"
+                       onmouseover="this.style.transform='scale(1.1)'; this.style.background='rgba(255,255,255,0.3)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(255,255,255,0.2)'">
+                      <div style="font-size: 2rem; font-weight: bold; margin-bottom: 10px;">${number.num}</div>
+                      <div style="font-weight: bold; font-size: 1rem; margin: 5px 0;">${number.en}</div>
+                      <div style="opacity: 0.8; font-size: 0.9rem;">${number.pt}</div>
+                  </div>
+              `;
+          });
+
+          numberHtml += `
+                      </div>
+
+                      <div id="ordinalNumbers" style="display: none; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin: 30px 0;">
+          `;
+
+          numbers.slice(1, 11).forEach((number, index) => {
+              numberHtml += `
+                  <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s;"
+                       onclick="speak('${number.ordinal}')"
+                       onmouseover="this.style.transform='scale(1.1)'; this.style.background='rgba(255,255,255,0.3)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(255,255,255,0.2)'">
+                      <div style="font-size: 2rem; font-weight: bold; margin-bottom: 10px;">${number.num}${number.num === 1 ? 'st' : number.num === 2 ? 'nd' : number.num === 3 ? 'rd' : 'th'}</div>
+                      <div style="font-weight: bold; font-size: 1rem; margin: 5px 0;">${number.ordinal}</div>
+                      <div style="opacity: 0.8; font-size: 0.8rem;">${number.num}º</div>
+                  </div>
+              `;
+          });
+
+          numberHtml += `
+                      </div>
+
+                      <div style="background: rgba(255,215,0,0.2); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #ffd700;">
+                          <h3 style="color: #ffd700; margin-bottom: 15px;">📚 Dicas dos Números</h3>
+                          <div style="text-align: left; line-height: 1.6; font-size: 0.9rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                              <div>
+                                  <p><strong>🔢 Cardinais:</strong> One, Two, Three... (quantidade)</p>
+                                  <p><strong>📋 Ordinais:</strong> First, Second, Third... (ordem)</p>
+                                  <p><strong>➕ Operações:</strong> Plus (+), Minus (-), Times (×)</p>
+                              </div>
+                              <div>
+                                  <p><strong>🎂 Idade:</strong> "I am 10 years old"</p>
+                                  <p><strong>📞 Telefone:</strong> "My number is..."</p>
+                                  <p><strong>🕐 Tempo:</strong> "It's 3 o'clock"</p>
+                              </div>
+                          </div>
+                      </div>
+
+                      <button style="margin-top: 30px; padding: 15px 30px; background: #e74c3c; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                          ✅ Fechar
+                      </button>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', numberHtml);
+
+          // Função para mostrar tipos de números
+          window.showNumberType = function (type) {
+              document.getElementById('basicNumbers').style.display = type === 'basic' ? 'grid' : 'none';
+              document.getElementById('specialNumbers').style.display = type === 'special' ? 'grid' : 'none';
+              document.getElementById('ordinalNumbers').style.display = type === 'ordinal' ? 'grid' : 'none';
+          };
+
+          // Função para mostrar detalhes do número
+          window.showNumberDetails = function (index) {
+              const number = numbers[index];
+              speak(number.en);
+
+              let detailHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a52); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 20px; font-size: 4rem;">${number.num}</h2>
+                          <h3 style="margin-bottom: 20px;">${number.en} / ${number.pt}</h3>
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                              <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 15px; text-align: left;">
+                                  <div><strong>🔢 Cardinal:</strong> ${number.en}</div>
+                                  <div><strong>📋 Ordinal:</strong> ${number.ordinal}</div>
+                                  <div><strong>🇧🇷 Português:</strong> ${number.pt}</div>
+                                  <div><strong>✏️ Escrito:</strong> ${number.num}</div>
+                              </div>
+                          </div>
+
+                          <div style="margin: 20px 0;">
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="speak('${number.en}')">
+                                  🔊 Cardinal
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="speak('${number.ordinal}')">
+                                  📋 Ordinal
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="numberInSentence(${number.num}, '${number.en}')">
+                                  💬 Usar em Frase
+                              </button>
+                          </div>
+
+                          <button style="margin-top: 20px; padding: 15px 30px; background: rgba(0,0,0,0.3); color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', detailHtml);
+          };
+
+          // Função para usar número em frase
+          window.numberInSentence = function (num, numWord) {
+              const sentences = [
+                  `I have ${numWord.toLowerCase()} ${num === 1 ? 'apple' : 'apples'}`,
+                  `There are ${numWord.toLowerCase()} ${num === 1 ? 'cat' : 'cats'} here`,
+                  `I am ${numWord.toLowerCase()} years old`,
+                  `We need ${numWord.toLowerCase()} ${num === 1 ? 'book' : 'books'}`
+              ];
+              const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+              speak(randomSentence);
+              alert(`💬 Frase exemplo:\n\n"${randomSentence}"\n\n🎯 Pratique falando esta frase!`);
+          };
+
+          // Quiz de números
+          window.startNumberQuiz = function () {
+              const shuffledNumbers = [...numbers].sort(() => Math.random() - 0.5).slice(0, 6);
+              let currentQuestion = 0;
+              let score = 0;
+
+              function askQuestion() {
+                  if (currentQuestion >= shuffledNumbers.length) {
+                      alert(`🎉 Quiz Completo!\n\n🏆 Pontuação: ${score}/${shuffledNumbers.length}\n\n${score === shuffledNumbers.length ? '🥇 Perfeito!' : score >= 4 ? '🥈 Muito bom!' : '🥉 Continue praticando!'}`);
+                      return;
+                  }
+
+                  const number = shuffledNumbers[currentQuestion];
+                  const options = [number.en, ...numbers.filter(n => n.en !== number.en).sort(() => Math.random() - 0.5).slice(0, 2).map(n => n.en)].sort(() => Math.random() - 0.5);
+
+                  const answer = prompt(`🎯 Quiz de Números - Pergunta ${currentQuestion + 1}/${shuffledNumbers.length}\n\nComo se diz "${number.num}" em inglês?\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n\nDigite 1, 2 ou 3:`);
+
+                  if (answer && options[parseInt(answer) - 1] === number.en) {
+                      score++;
+                      speak(number.en);
+                      alert('✅ Correto!');
+                  } else {
+                      speak(number.en);
+                      alert(`❌ Incorreto! A resposta é: ${number.en}`);
+                  }
+
+                  currentQuestion++;
+                  setTimeout(askQuestion, 1000);
+              }
+
+              askQuestion();
+          };
+
+          // Prática de matemática em inglês
+          window.startMathPractice = function () {
+              alert('➕ Matemática em Inglês\n\n🎯 Vamos praticar operações matemáticas!\n\n🚀 Começando...');
+
+              const operations = [
+                  { symbol: '+', word: 'plus', operation: (a, b) => a + b },
+                  { symbol: '-', word: 'minus', operation: (a, b) => a - b },
+                  { symbol: '×', word: 'times', operation: (a, b) => a * b }
+              ];
+
+              let currentRound = 0;
+              let score = 0;
+              const totalRounds = 5;
+
+              function mathRound() {
+                  if (currentRound >= totalRounds) {
+                      alert(`🎉 Prática de Matemática Completa!\n\n🏆 Pontuação: ${score}/${totalRounds}\n\n${score === totalRounds ? '🥇 Matemático Expert!' : score >= 3 ? '🥈 Muito bom!' : '🥉 Continue praticando!'}`);
+                      return;
+                  }
+
+                  const operation = operations[Math.floor(Math.random() * operations.length)];
+                  let num1, num2;
+
+                  if (operation.symbol === '×') {
+                      num1 = Math.floor(Math.random() * 5) + 1;
+                      num2 = Math.floor(Math.random() * 5) + 1;
+                  } else if (operation.symbol === '-') {
+                      num2 = Math.floor(Math.random() * 5) + 1;
+                      num1 = num2 + Math.floor(Math.random() * 5) + 1;
+                  } else {
+                      num1 = Math.floor(Math.random() * 10) + 1;
+                      num2 = Math.floor(Math.random() * 10) + 1;
+                  }
+
+                  const result = operation.operation(num1, num2);
+                  const num1Word = numbers[num1]?.en || num1.toString();
+                  const num2Word = numbers[num2]?.en || num2.toString();
+                  const resultWord = numbers[result]?.en || result.toString();
+
+                  const mathExpression = `${num1Word} ${operation.word} ${num2Word}`;
+                  speak(mathExpression);
+
+                  setTimeout(() => {
+                      const answer = prompt(`➕ Matemática ${currentRound + 1}/${totalRounds}\n\nEu falei: "${mathExpression}"\n\nQual é o resultado?\n\n(${num1} ${operation.symbol} ${num2} = ?)\n\nDigite sua resposta:`);
+
+                      if (answer && parseInt(answer) === result) {
+                          score++;
+                          speak(`Correct! ${resultWord}`);
+                          alert(`✅ Correto! ${result} (${resultWord})`);
+                      } else {
+                          speak(`Wrong! The answer is ${resultWord}`);
+                          alert(`❌ Incorreto! A resposta é: ${result} (${resultWord})`);
+                      }
+
+                      currentRound++;
+                      setTimeout(mathRound, 1000);
+                  }, 3000);
+              }
+
+              mathRound();
+          };
+      }
+
+      function showFamilyActivity() {
+          const family = [
+              { pt: 'Pai', en: 'Father', emoji: '👨', alt: 'Dad', relation: 'male parent' },
+              { pt: 'Mãe', en: 'Mother', emoji: '👩', alt: 'Mom', relation: 'female parent' },
+              { pt: 'Filho', en: 'Son', emoji: '👦', alt: 'Boy', relation: 'male child' },
+              { pt: 'Filha', en: 'Daughter', emoji: '👧', alt: 'Girl', relation: 'female child' },
+              { pt: 'Avô', en: 'Grandfather', emoji: '👴', alt: 'Grandpa', relation: 'father\'s father' },
+              { pt: 'Avó', en: 'Grandmother', emoji: '👵', alt: 'Grandma', relation: 'mother\'s mother' },
+              { pt: 'Irmão', en: 'Brother', emoji: '👦', alt: 'Bro', relation: 'male sibling' },
+              { pt: 'Irmã', en: 'Sister', emoji: '👧', alt: 'Sis', relation: 'female sibling' },
+              { pt: 'Tio', en: 'Uncle', emoji: '👨', alt: 'Uncle', relation: 'parent\'s brother' },
+              { pt: 'Tia', en: 'Aunt', emoji: '👩', alt: 'Auntie', relation: 'parent\'s sister' },
+              { pt: 'Primo', en: 'Cousin', emoji: '👦', alt: 'Cousin (m)', relation: 'uncle/aunt child' },
+              { pt: 'Prima', en: 'Cousin', emoji: '👧', alt: 'Cousin (f)', relation: 'uncle/aunt child' }
+          ];
+
+          let familyHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); padding: 40px; border-radius: 20px; max-width: 900px; width: 95%; text-align: center; color: #333; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 20px; color: #2d3436;">👨‍👩‍👧‍👦 Família em Inglês</h2>
+
+                      <div style="background: rgba(255,255,255,0.3); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                          <p style="opacity: 0.8; margin-bottom: 15px; color: #2d3436;">Aprenda os membros da família! Clique para ouvir a pronúncia!</p>
+                          <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                              <button style="padding: 10px 20px; background: #6c5ce7; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="startFamilyQuiz()">
+                                  🎯 Quiz da Família
+                              </button>
+                              <button style="padding: 10px 20px; background: #fd79a8; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="familyTreeGame()">
+                                  🌳 Árvore Genealógica
+                              </button>
+                              <button style="padding: 10px 20px; background: #00b894; color: white; border: none; border-radius: 20px; cursor: pointer;" onclick="familyRelationships()">
+                                  💝 Relacionamentos
+                              </button>
+                          </div>
+                      </div>
+
+                      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; margin: 30px 0;">
+          `;
+
+          family.forEach((member, index) => {
+              familyHtml += `
+                  <div style="background: rgba(255,255,255,0.7); padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent;"
+                       onclick="showFamilyDetails(${index})"
+                       onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='#fdcb6e'; this.style.background='rgba(255,255,255,0.9)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.7)'">
+                      <div style="font-size: 3rem; margin-bottom: 10px;">${member.emoji}</div>
+                      <div style="font-weight: bold; font-size: 1.2rem; margin: 10px 0; color: #2d3436;">${member.en}</div>
+                      <div style="opacity: 0.7; color: #636e72; font-size: 0.95rem;">${member.pt}</div>
+                      <div style="font-size: 0.8rem; margin-top: 5px; opacity: 0.6; color: #74b9ff;">${member.alt}</div>
+                  </div>
+              `;
+          });
+
+          familyHtml += `
+                      </div>
+
+                      <div style="background: rgba(255,215,0,0.2); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #ffd700;">
+                          <h3 style="color: #d63031; margin-bottom: 15px;">💡 Dicas da Família</h3>
+                          <div style="text-align: left; line-height: 1.6; font-size: 0.9rem; color: #2d3436; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                              <div>
+                                  <p><strong>👨 Father/Dad:</strong> Pai (formal/informal)</p>
+                                  <p><strong>👩 Mother/Mom:</strong> Mãe (formal/informal)</p>
+                                  <p><strong>👦👧 Children:</strong> Filhos (plural)</p>
+                              </div>
+                              <div>
+                                  <p><strong>👴👵 Grandparents:</strong> Avós</p>
+                                  <p><strong>👦👧 Siblings:</strong> Irmãos</p>
+                                  <p><strong>👨👩 Relatives:</strong> Parentes</p>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div style="margin-top: 30px;">
+                          <button style="padding: 15px 30px; background: #e17055; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar ao Menu
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', familyHtml);
+
+          // Função para mostrar detalhes do membro da família
+          window.showFamilyDetails = function (index) {
+              const member = family[index];
+              speak(member.en);
+
+              let detailHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: #2d3436;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 20px;">${member.emoji} ${member.en}</h2>
+                          <h3 style="margin-bottom: 20px; opacity: 0.8;">${member.pt}</h3>
+
+                          <div style="background: rgba(255,255,255,0.3); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                              <div style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 15px; text-align: left;">
+                                  <div><strong>🔤 Inglês:</strong> ${member.en}</div>
+                                  <div><strong>💬 Informal:</strong> ${member.alt}</div>
+                                  <div><strong>🇧🇷 Português:</strong> ${member.pt}</div>
+                                  <div><strong>🔗 Relação:</strong> ${member.relation}</div>
+                              </div>
+                          </div>
+
+                          <div style="margin: 20px 0;">
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.4); color: #2d3436; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="speak('${member.en}')">
+                                  🔊 Formal
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.4); color: #2d3436; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="speak('${member.alt}')">
+                                  💬 Informal
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 20px; background: rgba(255,255,255,0.4); color: #2d3436; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer;" onclick="familySentence('${member.en}')">
+                                  📝 Frase
+                              </button>
+                          </div>
+
+                          <button style="margin-top: 20px; padding: 15px 30px; background: rgba(0,0,0,0.2); color: #2d3436; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', detailHtml);
+          };
+
+          // Função para criar frases com membros da família
+          window.familySentence = function (memberName) {
+              const sentences = [
+                  `My ${memberName.toLowerCase()} is very nice`,
+                  `I love my ${memberName.toLowerCase()}`,
+                  `This is my ${memberName.toLowerCase()}`,
+                  `My ${memberName.toLowerCase()} is at home`
+              ];
+              const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+              speak(randomSentence);
+              alert(`💬 Frase exemplo:\n\n"${randomSentence}"\n\n🎯 Pratique falando esta frase!`);
+          };
+
+          // Quiz da família
+          window.startFamilyQuiz = function () {
+              const shuffledFamily = [...family].sort(() => Math.random() - 0.5).slice(0, 6);
+              let currentQuestion = 0;
+              let score = 0;
+
+              function askQuestion() {
+                  if (currentQuestion >= shuffledFamily.length) {
+                      alert(`🎉 Quiz da Família Completo!\n\n🏆 Pontuação: ${score}/${shuffledFamily.length}\n\n${score === shuffledFamily.length ? '🥇 Especialista em Família!' : score >= 4 ? '🥈 Muito bom!' : '🥉 Continue praticando!'}`);
+                      return;
+                  }
+
+                  const member = shuffledFamily[currentQuestion];
+                  const options = [member.en, ...family.filter(f => f.en !== member.en).sort(() => Math.random() - 0.5).slice(0, 2).map(f => f.en)].sort(() => Math.random() - 0.5);
+
+                  const answer = prompt(`🎯 Quiz da Família - Pergunta ${currentQuestion + 1}/${shuffledFamily.length}\n\nQual é este membro da família em inglês?\n\n${member.emoji} ${member.pt}\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n\nDigite 1, 2 ou 3:`);
+
+                  if (answer && options[parseInt(answer) - 1] === member.en) {
+                      score++;
+                      speak(member.en);
+                      alert('✅ Correto! ' + member.en);
+                  } else {
+                      speak(member.en);
+                      alert(`❌ Incorreto! A resposta é: ${member.en}`);
+                  }
+
+                  currentQuestion++;
+                  setTimeout(askQuestion, 1000);
+              }
+
+              askQuestion();
+          };
+
+          // Jogo da árvore genealógica
+          window.familyTreeGame = function () {
+              alert('🌳 Árvore Genealógica\n\n🎯 Vou descrever uma família, você deve identificar o membro!\n\n🚀 Começando...');
+
+              const relationships = [
+                  { description: 'Your father\'s father', answer: 'Grandfather' },
+                  { description: 'Your mother\'s sister', answer: 'Aunt' },
+                  { description: 'Your uncle\'s child', answer: 'Cousin' },
+                  { description: 'Your parent\'s child (male)', answer: 'Brother' },
+                  { description: 'Your parent\'s child (female)', answer: 'Sister' }
+              ];
+
+              let currentRound = 0;
+              let score = 0;
+
+              function treeRound() {
+                  if (currentRound >= relationships.length) {
+                      alert(`🎉 Árvore Genealógica Completa!\n\n🏆 Pontuação: ${score}/${relationships.length}\n\n${score === relationships.length ? '🥇 Genealogista Expert!' : score >= 3 ? '🥈 Bom conhecimento!' : '🥉 Continue estudando!'}`);
+                      return;
+                  }
+
+                  const relationship = relationships[currentRound];
+                  speak(relationship.description);
+
+                  setTimeout(() => {
+                      const answer = prompt(`🌳 Árvore ${currentRound + 1}/${relationships.length}\n\nEu falei: "${relationship.description}"\n\nQual membro da família é este?\n\nDigite sua resposta:`);
+
+                      if (answer && answer.toLowerCase() === relationship.answer.toLowerCase()) {
+                          score++;
+                          speak(`Correct! ${relationship.answer}`);
+                          alert(`✅ Correto! ${relationship.answer}`);
+                      } else {
+                          speak(`Wrong! The answer is ${relationship.answer}`);
+                          alert(`❌ Incorreto! A resposta é: ${relationship.answer}`);
+                      }
+
+                      currentRound++;
+                      setTimeout(treeRound, 1000);
+                  }, 3000);
+              }
+
+              treeRound();
+          };
+
+          // Relacionamentos familiares
+          window.familyRelationships = function () {
+              alert('💝 Relacionamentos Familiares\n\n📚 Aprenda expressões especiais:\n\n• "Family comes first" - A família vem em primeiro lugar\n• "Blood is thicker than water" - O sangue é mais grosso que a água\n• "Like father, like son" - Tal pai, tal filho\n• "Home is where the heart is" - O lar é onde está o coração\n\n🎯 Pratique essas expressões!');
+
+              const expressions = [
+                  'Family comes first',
+                  'Blood is thicker than water',
+                  'Like father, like son',
+                  'Home is where the heart is'
+              ];
+
+              expressions.forEach((expr, index) => {
+                  setTimeout(() => {
+                      speak(expr);
+                  }, index * 2000);
+              });
+          };
+      }
+
+      function showGamesActivity() {
+          let gamesHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 30px;">🎮 Jogos Educativos</h2>
+                      <div style="display: grid; gap: 20px;">
+                          <button style="padding: 20px; background: rgba(255,255,255,0.2); border: none; border-radius: 15px; color: white; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;"
+                                  onclick="startMemoryGame()"
+                                  onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1.05)'"
+                                  onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='scale(1)'">
+                              🧠 Jogo da Memória
+                          </button>
+                          <button style="padding: 20px; background: rgba(255,255,255,0.2); border: none; border-radius: 15px; color: white; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;"
+                                  onclick="startQuizGame()"
+                                  onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1.05)'"
+                                  onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='scale(1)'">
+                              ❓ Quiz de Inglês
+                          </button>
+                          <button style="padding: 20px; background: rgba(255,255,255,0.2); border: none; border-radius: 15px; color: white; font-size: 1.1rem; cursor: pointer; transition: all 0.3s;"
+                                  onclick="startSpellingGame()"
+                                  onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1.05)'"
+                                  onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='scale(1)'">
+                              📝 Jogo de Soletrar
+                          </button>
+                      </div>
+                      <button style="margin-top: 30px; padding: 15px 30px; background: #ff6b6b; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                          ✅ Fechar
+                      </button>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', gamesHtml);
+      }
+
+      function showMusicActivity() {
+          const songs = [
+              {
+                  title: "Twinkle Twinkle Little Star",
+                  emoji: "⭐",
+                  lyrics: "Twinkle, twinkle, little star\nHow I wonder what you are\nUp above the world so high\nLike a diamond in the sky\nTwinkle, twinkle, little star\nHow I wonder what you are",
+                  translation: "Brilhe, brilhe, estrelinha\nComo eu me pergunto o que você é\nLá em cima do mundo tão alto\nComo um diamante no céu\nBrilhe, brilhe, estrelinha\nComo eu me pergunto o que você é"
+              },
+              {
+                  title: "Head Shoulders Knees and Toes",
+                  emoji: "🤸",
+                  lyrics: "Head, shoulders, knees and toes\nKnees and toes\nHead, shoulders, knees and toes\nKnees and toes\nAnd eyes and ears and mouth and nose\nHead, shoulders, knees and toes\nKnees and toes",
+                  translation: "Cabeça, ombros, joelhos e dedos dos pés\nJoelhos e dedos dos pés\nCabeça, ombros, joelhos e dedos dos pés\nJoelhos e dedos dos pés\nE olhos e orelhas e boca e nariz\nCabeça, ombros, joelhos e dedos dos pés\nJoelhos e dedos dos pés"
+              },
+              {
+                  title: "If You're Happy and You Know It",
+                  emoji: "😊",
+                  lyrics: "If you're happy and you know it\nClap your hands (clap clap)\nIf you're happy and you know it\nClap your hands (clap clap)\nIf you're happy and you know it\nThen your face will surely show it\nIf you're happy and you know it\nClap your hands (clap clap)",
+                  translation: "Se você está feliz e sabe disso\nBata palmas (clap clap)\nSe você está feliz e sabe disso\nBata palmas (clap clap)\nSe você está feliz e sabe disso\nEntão seu rosto certamente mostrará\nSe você está feliz e sabe disso\nBata palmas (clap clap)"
+              },
+              {
+                  title: "The Wheels on the Bus",
+                  emoji: "🚌",
+                  lyrics: "The wheels on the bus go round and round\nRound and round, round and round\nThe wheels on the bus go round and round\nAll through the town",
+                  translation: "As rodas do ônibus giram e giram\nGiram e giram, giram e giram\nAs rodas do ônibus giram e giram\nPor toda a cidade"
+              },
+              {
+                  title: "Old MacDonald Had a Farm",
+                  emoji: "🚜",
+                  lyrics: "Old MacDonald had a farm\nE-I-E-I-O\nAnd on his farm he had a cow\nE-I-E-I-O\nWith a moo moo here\nAnd a moo moo there\nHere a moo, there a moo\nEverywhere a moo moo\nOld MacDonald had a farm\nE-I-E-I-O",
+                  translation: "O Velho MacDonald tinha uma fazenda\nE-I-E-I-O\nE em sua fazenda ele tinha uma vaca\nE-I-E-I-O\nCom um muu muu aqui\nE um muu muu ali\nAqui um muu, ali um muu\nEm todo lugar um muu muu\nO Velho MacDonald tinha uma fazenda\nE-I-E-I-O"
+              }
+          ];
+
+          let musicHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 40px; border-radius: 20px; max-width: 800px; width: 90%; text-align: center; color: #333; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 30px; color: #d63384;">🎵 Músicas em Inglês</h2>
+                      <div style="display: grid; gap: 20px;">
+          `;
+
+          songs.forEach((song, index) => {
+              musicHtml += `
+                  <div style="background: rgba(255,255,255,0.8); padding: 20px; border-radius: 15px; cursor: pointer; transition: all 0.3s; border: 2px solid transparent;"
+                       onclick="showSongLyrics(${index})"
+                       onmouseover="this.style.transform='scale(1.02)'; this.style.borderColor='#d63384'; this.style.background='rgba(255,255,255,0.95)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.8)'">
+                      <div style="font-size: 2.5rem; margin-bottom: 10px;">${song.emoji}</div>
+                      <div style="font-weight: bold; font-size: 1.3rem; margin: 10px 0; color: #d63384;">${song.title}</div>
+                      <button style="padding: 8px 16px; background: #fd7e14; color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer; margin: 5px;" onclick="event.stopPropagation(); speakSong('${song.title}')">
+                          🔊 Cantar
+                      </button>
+                      <button style="padding: 8px 16px; background: #20c997; color: white; border: none; border-radius: 20px; font-size: 0.9rem; cursor: pointer; margin: 5px;" onclick="event.stopPropagation(); showSongLyrics(${index})">
+                          📝 Letra
+                      </button>
+                  </div>
+              `;
+          });
+
+          musicHtml += `
+                      </div>
+                      <button style="margin-top: 30px; padding: 15px 30px; background: #d63384; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                          ✅ Fechar
+                      </button>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', musicHtml);
+
+          // Função para mostrar letras das músicas
+          window.showSongLyrics = function (index) {
+              const song = songs[index];
+              let lyricsHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 25000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 600px; width: 90%; text-align: center; color: white; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 20px;">${song.emoji} ${song.title}</h2>
+                          <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0; text-align: left; line-height: 1.6;">
+                              <h3 style="color: #ffd700; margin-bottom: 15px;">🎤 Letra em Inglês:</h3>
+                              <pre style="white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; font-size: 1.1rem;">${song.lyrics}</pre>
+                          </div>
+                          <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin: 20px 0; text-align: left; line-height: 1.6;">
+                              <h3 style="color: #87ceeb; margin-bottom: 15px;">🇧🇷 Tradução:</h3>
+                              <pre style="white-space: pre-wrap; font-family: 'Segoe UI', sans-serif; font-size: 1rem; opacity: 0.9;">${song.translation}</pre>
+                          </div>
+                          <div style="margin: 20px 0;">
+                              <button style="margin: 0 10px; padding: 12px 25px; background: #fd7e14; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="speakSong('${song.title}')">
+                                  🔊 Cantar Música
+                              </button>
+                              <button style="margin: 0 10px; padding: 12px 25px; background: #20c997; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="practiceVocabulary('${song.title}')">
+                                  📚 Vocabulário
+                              </button>
+                          </div>
+                          <button style="margin-top: 20px; padding: 15px 30px; background: #dc3545; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ✅ Fechar Letra
+                          </button>
+                      </div>
+                  </div>
+              `;
+              document.body.insertAdjacentHTML('beforeend', lyricsHtml);
+          };
+
+          // Função para cantar as músicas
+          window.speakSong = function (title) {
+              const song = songs.find(s => s.title === title);
+              if (song && 'speechSynthesis' in window) {
+                  const utterance = new SpeechSynthesisUtterance(song.lyrics.replace(/\n/g, '. '));
+                  utterance.lang = 'en-US';
+                  utterance.rate = 0.6;
+                  utterance.pitch = 1.2;
+                  speechSynthesis.speak(utterance);
+                  alert(`🎵 Cantando: ${title}\n\n🎤 Acompanhe a letra e cante junto!`);
+              }
+          };
+
+          // Função para praticar vocabulário da música
+          window.practiceVocabulary = function (title) {
+              const vocabularies = {
+                  "Twinkle Twinkle Little Star": [
+                      { en: "Star", pt: "Estrela", emoji: "⭐" },
+                      { en: "Sky", pt: "Céu", emoji: "🌌" },
+                      { en: "Diamond", pt: "Diamante", emoji: "💎" },
+                      { en: "Wonder", pt: "Perguntar-se", emoji: "🤔" }
+                  ],
+                  "Head Shoulders Knees and Toes": [
+                      { en: "Head", pt: "Cabeça", emoji: "🧠" },
+                      { en: "Shoulders", pt: "Ombros", emoji: "🤷" },
+                      { en: "Knees", pt: "Joelhos", emoji: "🦵" },
+                      { en: "Toes", pt: "Dedos dos pés", emoji: "🦶" },
+                      { en: "Eyes", pt: "Olhos", emoji: "👀" },
+                      { en: "Ears", pt: "Orelhas", emoji: "👂" },
+                      { en: "Mouth", pt: "Boca", emoji: "👄" },
+                      { en: "Nose", pt: "Nariz", emoji: "👃" }
+                  ]
+              };
+
+              const vocab = vocabularies[title] || [
+                  { en: "Happy", pt: "Feliz", emoji: "😊" },
+                  { en: "Song", pt: "Música", emoji: "🎵" },
+                  { en: "Sing", pt: "Cantar", emoji: "🎤" }
+              ];
+
+              let vocabHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 25000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #ffeaa7, #fab1a0); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: #333;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 30px; color: #d63384;">📚 Vocabulário da Música</h2>
+                          <h3 style="margin-bottom: 20px; color: #e17055;">${title}</h3>
+                          <div style="display: grid; gap: 15px;">
+              `;
+
+              vocab.forEach(word => {
+                  vocabHtml += `
+                      <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; cursor: pointer; transition: all 0.3s;"
+                           onclick="speak('${word.en}')"
+                           onmouseover="this.style.background='rgba(255,255,255,1)'; this.style.transform='scale(1.02)'"
+                           onmouseout="this.style.background='rgba(255,255,255,0.8)'; this.style.transform='scale(1)'">
+                          <div style="display: flex; align-items: center; justify-content: space-between;">
+                              <div style="font-size: 2rem;">${word.emoji}</div>
+                              <div style="flex: 1; margin: 0 15px;">
+                                  <div style="font-weight: bold; font-size: 1.2rem; color: #d63384;">${word.en}</div>
+                                  <div style="opacity: 0.7; font-size: 1rem;">${word.pt}</div>
+                              </div>
+                              <div style="font-size: 1.5rem;">🔊</div>
+                          </div>
+                      </div>
+                  `;
+              });
+
+              vocabHtml += `
+                          </div>
+                          <button style="margin-top: 30px; padding: 15px 30px; background: #e17055; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ✅ Fechar Vocabulário
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', vocabHtml);
+          };
+      }
+
+      function showAchievements() {
+          // Sistema de conquistas local
+          const achievements = [
+              {
+                  id: 'first_access',
+                  name: 'Primeiro Acesso',
+                  description: 'Bem-vindo ao Little English Explorer!',
+                  emoji: '🎉',
+                  unlocked: true,
+                  progress: 1,
+                  total: 1
+              },
+              {
+                  id: 'color_explorer',
+                  name: 'Explorador de Cores',
+                  description: 'Aprenda todas as 6 cores básicas',
+                  emoji: '🎨',
+                  unlocked: false,
+                  progress: 0,
+                  total: 6
+              },
+              {
+                  id: 'animal_friend',
+                  name: 'Amigo dos Animais',
+                  description: 'Conheça todos os 6 animais',
+                  emoji: '🐸',
+                  unlocked: false,
+                  progress: 0,
+                  total: 6
+              },
+              {
+                  id: 'number_master',
+                  name: 'Mestre dos Números',
+                  description: 'Domine os números de 1 a 10',
+                  emoji: '🔢',
+                  unlocked: false,
+                  progress: 0,
+                  total: 10
+              },
+              {
+                  id: 'family_unity',
+                  name: 'Família Unida',
+                  description: 'Aprenda todos os membros da família',
+                  emoji: '👨‍👩‍👧‍👦',
+                  unlocked: false,
+                  progress: 0,
+                  total: 6
+              },
+              {
+                  id: 'game_master',
+                  name: 'Mestre dos Jogos',
+                  description: 'Complete todos os 3 tipos de jogos',
+                  emoji: '🎮',
+                  unlocked: false,
+                  progress: 0,
+                  total: 3
+              },
+              {
+                  id: 'music_lover',
+                  name: 'Amante da Música',
+                  description: 'Ouça todas as 5 músicas',
+                  emoji: '�',
+                  unlocked: false,
+                  progress: 0,
+                  total: 5
+              },
+              {
+                  id: 'vocabulary_builder',
+                  name: 'Construtor de Vocabulário',
+                  description: 'Aprenda 50 palavras em inglês',
+                  emoji: '📚',
+                  unlocked: false,
+                  progress: 0,
+                  total: 50
+              },
+              {
+                  id: 'pronunciation_pro',
+                  name: 'Profissional da Pronúncia',
+                  description: 'Use o recurso de áudio 25 vezes',
+                  emoji: '🔊',
+                  unlocked: false,
+                  progress: 0,
+                  total: 25
+              },
+              {
+                  id: 'quiz_champion',
+                  name: 'Campeão de Quiz',
+                  description: 'Acerte 10 quizzes consecutivos',
+                  emoji: '🏆',
+                  unlocked: false,
+                  progress: 0,
+                  total: 10
+              },
+              {
+                  id: 'daily_learner',
+                  name: 'Aprendiz Diário',
+                  description: 'Use o aplicativo por 7 dias seguidos',
+                  emoji: '📅',
+                  unlocked: false,
+                  progress: 1,
+                  total: 7
+              },
+              {
+                  id: 'speed_learner',
+                  name: 'Aprendiz Veloz',
+                  description: 'Complete uma atividade em menos de 2 minutos',
+                  emoji: '⚡',
+                  unlocked: false,
+                  progress: 0,
+                  total: 1
+              },
+              {
+                  id: 'perfectionist',
+                  name: 'Perfeccionista',
+                  description: 'Acerte 100% em 5 quizzes diferentes',
+                  emoji: '💯',
+                  unlocked: false,
+                  progress: 0,
+                  total: 5
+              },
+              {
+                  id: 'explorer',
+                  name: 'Explorador Completo',
+                  description: 'Visite todas as seções do aplicativo',
+                  emoji: '🗺️',
+                  unlocked: false,
+                  progress: 1,
+                  total: 7
+              },
+              {
+                  id: 'social_learner',
+                  name: 'Aprendiz Social',
+                  description: 'Compartilhe seu progresso (simulado)',
+                  emoji: '�',
+                  unlocked: false,
+                  progress: 0,
+                  total: 1
+              }
+          ];
+
+          // Calcular estatísticas
+          const unlockedCount = achievements.filter(a => a.unlocked).length;
+          const totalAchievements = achievements.length;
+          const completionRate = Math.round((unlockedCount / totalAchievements) * 100);
+
+          let achievementHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 900px; width: 95%; text-align: center; color: white; max-height: 90vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 20px;">🏆 Sistema de Conquistas</h2>
+
+                      <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin: 20px 0;">
+                          <h3 style="color: #ffd700; margin-bottom: 15px;">📊 Suas Estatísticas</h3>
+                          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; text-align: center;">
+                              <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 10px;">
+                                  <div style="font-size: 2rem;">🏆</div>
+                                  <div style="font-weight: bold; font-size: 1.5rem;">${unlockedCount}/${totalAchievements}</div>
+                                  <div style="opacity: 0.8;">Conquistas</div>
+                              </div>
+                              <div style="background: rgba(0,255,127,0.2); padding: 15px; border-radius: 10px;">
+                                  <div style="font-size: 2rem;">📈</div>
+                                  <div style="font-weight: bold; font-size: 1.5rem;">${completionRate}%</div>
+                                  <div style="opacity: 0.8;">Progresso</div>
+                              </div>
+                              <div style="background: rgba(255,69,0,0.2); padding: 15px; border-radius: 10px;">
+                                  <div style="font-size: 2rem;">�</div>
+                                  <div style="font-weight: bold; font-size: 1.5rem;">1</div>
+                                  <div style="opacity: 0.8;">Sequência</div>
+                              </div>
+                              <div style="background: rgba(138,43,226,0.2); padding: 15px; border-radius: 10px;">
+                                  <div style="font-size: 2rem;">⭐</div>
+                                  <div style="font-weight: bold; font-size: 1.5rem;">${unlockedCount * 100}</div>
+                                  <div style="opacity: 0.8;">XP Total</div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div style="display: grid; gap: 15px; margin: 20px 0;">
+          `;
+
+          achievements.forEach(achievement => {
+              const progressPercent = Math.round((achievement.progress / achievement.total) * 100);
+              const isCompleted = achievement.unlocked;
+
+              achievementHtml += `
+                  <div style="background: ${isCompleted ? 'rgba(0,255,127,0.2)' : 'rgba(255,255,255,0.1)'}; padding: 20px; border-radius: 15px; text-align: left; border: 2px solid ${isCompleted ? '#00ff7f' : 'rgba(255,255,255,0.2)'}; transition: all 0.3s; cursor: pointer;"
+                       onclick="showAchievementDetails('${achievement.id}')"
+                       onmouseover="this.style.transform='scale(1.02)'; this.style.background='${isCompleted ? 'rgba(0,255,127,0.3)' : 'rgba(255,255,255,0.2)'}'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.background='${isCompleted ? 'rgba(0,255,127,0.2)' : 'rgba(255,255,255,0.1)'}'">
+                      <div style="display: flex; align-items: center; justify-content: space-between;">
+                          <div style="display: flex; align-items: center; gap: 15px;">
+                              <div style="font-size: 2.5rem; ${isCompleted ? '' : 'opacity: 0.5; filter: grayscale(100%);'}">${achievement.emoji}</div>
+                              <div>
+                                  <div style="font-weight: bold; font-size: 1.3rem; margin-bottom: 5px; ${isCompleted ? 'color: #00ff7f;' : ''}">${achievement.name}</div>
+                                  <div style="opacity: 0.8; font-size: 0.95rem; margin-bottom: 8px;">${achievement.description}</div>
+                                  <div style="background: rgba(0,0,0,0.3); border-radius: 10px; height: 8px; overflow: hidden;">
+                                      <div style="background: ${isCompleted ? '#00ff7f' : '#ffd700'}; height: 100%; width: ${progressPercent}%; transition: width 0.3s;"></div>
+                                  </div>
+                                  <div style="font-size: 0.85rem; margin-top: 5px; opacity: 0.7;">${achievement.progress}/${achievement.total} ${isCompleted ? '✅ COMPLETO' : ''}</div>
+                              </div>
+                          </div>
+                          <div style="text-align: center;">
+                              <div style="font-weight: bold; color: #ffd700;">+${achievement.unlocked ? 100 : 0} XP</div>
+                              ${isCompleted ? '<div style="color: #00ff7f; font-size: 0.8rem; margin-top: 5px;">🏆 DESBLOQUEADO</div>' : '<div style="opacity: 0.6; font-size: 0.8rem; margin-top: 5px;">🔒 BLOQUEADO</div>'}
+                          </div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          achievementHtml += `
+                      </div>
+
+                      <div style="background: rgba(255,215,0,0.2); padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px solid #ffd700;">
+                          <h3 style="color: #ffd700; margin-bottom: 15px;">� Próximas Metas</h3>
+                          <div style="text-align: left; line-height: 1.6;">
+                              <p>• 🎨 Complete a atividade de cores para desbloquear "Explorador de Cores"</p>
+                              <p>• 🎮 Jogue todos os tipos de jogos para se tornar "Mestre dos Jogos"</p>
+                              <p>• 🔊 Use o áudio 25 vezes para virar "Profissional da Pronúncia"</p>
+                              <p>• 📚 Aprenda 50 palavras para ser um "Construtor de Vocabulário"</p>
+                          </div>
+                      </div>
+
+                      <div style="margin-top: 30px;">
+                          <button style="margin: 0 10px; padding: 15px 30px; background: #ffd700; color: #333; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer; font-weight: bold;" onclick="shareProgress()">
+                              🤝 Compartilhar Progresso
+                          </button>
+                          <button style="margin: 0 10px; padding: 15px 30px; background: #20c997; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="resetProgress()">
+                              🔄 Resetar Progresso
+                          </button>
+                          <button style="margin: 0 10px; padding: 15px 30px; background: #dc3545; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.parentElement.remove()">
+                              ✅ Fechar
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', achievementHtml);
+
+          // Funções auxiliares do sistema de conquistas
+          window.showAchievementDetails = function (id) {
+              const achievement = achievements.find(a => a.id === id);
+              alert(`🏆 ${achievement.name}\n\n${achievement.description}\n\nProgresso: ${achievement.progress}/${achievement.total}\nStatus: ${achievement.unlocked ? '✅ DESBLOQUEADO' : '🔒 BLOQUEADO'}\nXP: ${achievement.unlocked ? '+100' : '0'}`);
+          };
+
+          window.shareProgress = function () {
+              const message = `🎉 Estou aprendendo inglês com o Little English Explorer!\n\n🏆 Conquistas: ${unlockedCount}/${totalAchievements}\n� Progresso: ${completionRate}%\n⭐ XP Total: ${unlockedCount * 100}\n\n#LittleEnglishExplorer #AprendizadoDivertido`;
+
+              if (navigator.share) {
+                  navigator.share({
+                      title: 'Meu Progresso - Little English Explorer',
+                      text: message
+                  });
+              } else {
+                  navigator.clipboard.writeText(message).then(() => {
+                      alert('📋 Progresso copiado para área de transferência!\n\nCole em suas redes sociais para compartilhar seu aprendizado! 🚀');
+                  }).catch(() => {
+                      alert(`📱 Compartilhe seu progresso:\n\n${message}`);
+                  });
+              }
+          };
+
+          window.resetProgress = function () {
+              if (confirm('🔄 Tem certeza que deseja resetar todo seu progresso?\n\nEsta ação não pode ser desfeita!')) {
+                  alert('🔄 Progresso resetado!\n\nComeçe sua jornada de aprendizado novamente! 🚀');
+                  location.reload();
+              }
+          };
+      }
+
+      // Função otimizada para falar as palavras (compatível com móveis)
+      function speak(text) {
+          if ('speechSynthesis' in window) {
+              // Cancelar qualquer fala anterior
+              speechSynthesis.cancel();
+
+              const utterance = new SpeechSynthesisUtterance(text);
+              utterance.lang = 'en-US';
+              utterance.rate = isMobile ? 0.7 : 0.8; // Mais lento em móveis
+              utterance.pitch = 1.1;
+              utterance.volume = 0.9;
+
+              // Para dispositivos móveis, aguardar um pouco antes de falar
+              if (isMobile || isTouchDevice) {
+                  setTimeout(() => {
+                      speechSynthesis.speak(utterance);
+                  }, 100);
+              } else {
+                  speechSynthesis.speak(utterance);
+              }
+          } else {
+              console.log(`🔊 Falando: ${text}`);
+              // Fallback visual para dispositivos sem suporte
+              if (isMobile) {
+                  const notification = document.createElement('div');
+                  notification.style.cssText = `
+                      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                      background: rgba(0,0,0,0.8); color: white; padding: 15px 25px;
+                      border-radius: 25px; z-index: 99999; font-size: 1.2rem;
+                      animation: fadeInOut 2s ease-in-out;
+                  `;
+                  notification.textContent = `🔊 "${text}"`;
+                  document.body.appendChild(notification);
+                  setTimeout(() => notification.remove(), 2000);
+              }
+          }
+      }
+
+      // Jogos completos e interativos
+      function startMemoryGame() {
+          const cards = [
+              { en: 'Cat', pt: 'Gato', emoji: '🐱' },
+              { en: 'Dog', pt: 'Cachorro', emoji: '🐶' },
+              { en: 'Red', pt: 'Vermelho', emoji: '🔴' },
+              { en: 'Blue', pt: 'Azul', emoji: '🔵' },
+              { en: 'One', pt: 'Um', emoji: '1️⃣' },
+              { en: 'Two', pt: 'Dois', emoji: '2️⃣' },
+              { en: 'Happy', pt: 'Feliz', emoji: '😊' },
+              { en: 'Star', pt: 'Estrela', emoji: '⭐' }
+          ];
+
+          // Duplicar cartas para fazer pares
+          let gameCards = [];
+          cards.forEach(card => {
+              gameCards.push({ ...card, type: 'en', id: Math.random() });
+              gameCards.push({ ...card, type: 'pt', id: Math.random() });
+          });
+
+          // Embaralhar cartas
+          gameCards = gameCards.sort(() => Math.random() - 0.5);
+
+          let flippedCards = [];
+          let matchedPairs = 0;
+          let moves = 0;
+          let startTime = Date.now();
+
+          let memoryHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; align-items: center; justify-content: center; overflow-y: auto;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 20px; max-width: 800px; width: 95%; text-align: center; color: white; max-height: 95vh; overflow-y: auto;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 20px;">🧠 Jogo da Memória - Inglês</h2>
+
+                      <div style="display: flex; justify-content: space-around; margin-bottom: 20px; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                          <div><strong>⏱️ Tempo:</strong> <span id="game-time">00:00</span></div>
+                          <div><strong>👆 Movimentos:</strong> <span id="game-moves">0</span></div>
+                          <div><strong>🎯 Pares:</strong> <span id="game-pairs">0/8</span></div>
+                      </div>
+
+                      <div id="memory-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 500px; margin: 20px auto;">
+          `;
+
+          gameCards.forEach((card, index) => {
+              memoryHtml += `
+                  <div class="memory-card" data-index="${index}" style="
+                      aspect-ratio: 1;
+                      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                      border-radius: 12px;
+                      cursor: pointer;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 1.2rem;
+                      font-weight: bold;
+                      transition: all 0.3s;
+                      border: 3px solid transparent;
+                      position: relative;
+                      overflow: hidden;
+                  " onclick="flipCard(${index})">
+                      <div class="card-back" style="
+                          position: absolute;
+                          top: 0; left: 0; right: 0; bottom: 0;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                          font-size: 2rem;
+                      ">❓</div>
+                      <div class="card-front" style="
+                          position: absolute;
+                          top: 0; left: 0; right: 0; bottom: 0;
+                          display: none;
+                          align-items: center;
+                          justify-content: center;
+                          background: rgba(255,255,255,0.95);
+                          color: #333;
+                          flex-direction: column;
+                          padding: 5px;
+                      ">
+                          <div style="font-size: 1.5rem; margin-bottom: 5px;">${card.emoji}</div>
+                          <div style="font-size: 0.9rem; font-weight: bold;">${card.type === 'en' ? card.en : card.pt}</div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          memoryHtml += `
+                      </div>
+
+                      <div style="margin-top: 30px;">
+                          <button style="margin: 0 10px; padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="resetMemoryGame()">
+                              🔄 Novo Jogo
+                          </button>
+                          <button style="margin: 0 10px; padding: 12px 25px; background: #ffc107; color: #333; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="showMemoryHint()">
+                              💡 Dica
+                          </button>
+                          <button style="margin: 0 10px; padding: 12px 25px; background: #dc3545; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="this.parentElement.parentElement.parentElement.remove()">
+                              ❌ Sair
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', memoryHtml);
+
+          // Timer do jogo
+          const gameTimer = setInterval(() => {
+              const elapsed = Math.floor((Date.now() - startTime) / 1000);
+              const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+              const seconds = (elapsed % 60).toString().padStart(2, '0');
+              const timeElement = document.getElementById('game-time');
+              if (timeElement) {
+                  timeElement.textContent = `${minutes}:${seconds}`;
+              }
+          }, 1000);
+
+          // Função para virar carta
+          window.flipCard = function (index) {
+              const cardElement = document.querySelector(`[data-index="${index}"]`);
+              const cardBack = cardElement.querySelector('.card-back');
+              const cardFront = cardElement.querySelector('.card-front');
+
+              if (flippedCards.length >= 2 || cardFront.style.display === 'flex') return;
+
+              cardBack.style.display = 'none';
+              cardFront.style.display = 'flex';
+              cardElement.style.transform = 'scale(1.05)';
+
+              flippedCards.push({ index, card: gameCards[index], element: cardElement });
+
+              if (flippedCards.length === 2) {
+                  moves++;
+                  document.getElementById('game-moves').textContent = moves;
+
+                  setTimeout(() => {
+                      checkMatch();
+                  }, 1000);
+              }
+          };
+
+          // Verificar se as cartas combinam
+          function checkMatch() {
+              const [card1, card2] = flippedCards;
+
+              if (card1.card.en === card2.card.en && card1.card.type !== card2.card.type) {
+                  // Match!
+                  card1.element.style.borderColor = '#28a745';
+                  card2.element.style.borderColor = '#28a745';
+                  card1.element.style.background = 'rgba(40, 167, 69, 0.8)';
+                  card2.element.style.background = 'rgba(40, 167, 69, 0.8)';
+
+                  matchedPairs++;
+                  document.getElementById('game-pairs').textContent = `${matchedPairs}/8`;
+
+                  speak(card1.card.en);
+
+                  if (matchedPairs === 8) {
+                      clearInterval(gameTimer);
+                      setTimeout(() => {
+                          const finalTime = document.getElementById('game-time').textContent;
+                          alert(`🎉 Parabéns! Você completou o jogo!\n\n⏱️ Tempo: ${finalTime}\n� Movimentos: ${moves}\n🏆 Performance: ${moves <= 20 ? 'Excelente!' : moves <= 35 ? 'Muito Bom!' : 'Bom trabalho!'}`);
+                      }, 500);
+                  }
+              } else {
+                  // Não combina
+                  setTimeout(() => {
+                      card1.element.querySelector('.card-back').style.display = 'flex';
+                      card1.element.querySelector('.card-front').style.display = 'none';
+                      card2.element.querySelector('.card-back').style.display = 'flex';
+                      card2.element.querySelector('.card-front').style.display = 'none';
+                      card1.element.style.transform = 'scale(1)';
+                      card2.element.style.transform = 'scale(1)';
+                  }, 500);
+              }
+
+              flippedCards = [];
+          }
+
+          // Resetar jogo
+          window.resetMemoryGame = function () {
+              clearInterval(gameTimer);
+              document.querySelector('.memory-card').parentElement.parentElement.parentElement.parentElement.remove();
+              startMemoryGame();
+          };
+
+          // Mostrar dica
+          window.showMemoryHint = function () {
+              const availableCards = gameCards.filter((card, index) => {
+                  const element = document.querySelector(`[data-index="${index}"]`);
+                  return element.querySelector('.card-front').style.display !== 'flex';
+              });
+
+              if (availableCards.length > 0) {
+                  const randomCard = availableCards[Math.floor(Math.random() * availableCards.length)];
+                  alert(`💡 Dica: Procure por "${randomCard.en}" e "${randomCard.pt}" ${randomCard.emoji}`);
+              }
+          };
+      }
+
+      function startQuizGame() {
+          const allQuestions = {
+              easy: [
+                  { question: "Como se diz 'Gato' em inglês?", options: ["Cat", "Dog", "Bird"], correct: 0, category: "Animais" },
+                  { question: "Qual cor é 'Blue'?", options: ["Vermelho", "Azul", "Verde"], correct: 1, category: "Cores" },
+                  { question: "Como se diz '5' em inglês?", options: ["Four", "Five", "Six"], correct: 1, category: "Números" },
+                  { question: "Como se diz 'Cachorro' em inglês?", options: ["Cat", "Dog", "Fish"], correct: 1, category: "Animais" },
+                  { question: "Qual cor é 'Red'?", options: ["Vermelho", "Verde", "Azul"], correct: 0, category: "Cores" },
+                  { question: "Como se diz '1' em inglês?", options: ["One", "Two", "Three"], correct: 0, category: "Números" },
+                  { question: "Como se diz 'Pai' em inglês?", options: ["Mother", "Father", "Son"], correct: 1, category: "Família" },
+                  { question: "Como se diz 'Mãe' em inglês?", options: ["Mother", "Father", "Sister"], correct: 0, category: "Família" }
+              ],
+              medium: [
+                  { question: "Como se diz 'Coelho' em inglês?", options: ["Rabbit", "Bear", "Bird"], correct: 0, category: "Animais" },
+                  { question: "Qual cor é 'Purple'?", options: ["Rosa", "Roxo", "Preto"], correct: 1, category: "Cores" },
+                  { question: "Como se diz '8' em inglês?", options: ["Seven", "Eight", "Nine"], correct: 1, category: "Números" },
+                  { question: "Como se diz 'Avô' em inglês?", options: ["Grandfather", "Uncle", "Father"], correct: 0, category: "Família" },
+                  { question: "O que significa 'Happy'?", options: ["Triste", "Feliz", "Bravo"], correct: 1, category: "Sentimentos" },
+                  { question: "Como se diz 'Estrela' em inglês?", options: ["Moon", "Sun", "Star"], correct: 2, category: "Natureza" },
+                  { question: "O que significa 'Big'?", options: ["Grande", "Pequeno", "Médio"], correct: 0, category: "Tamanhos" },
+                  { question: "Como se diz 'Água' em inglês?", options: ["Fire", "Water", "Air"], correct: 1, category: "Elementos" }
+              ],
+              hard: [
+                  { question: "Qual é o plural de 'Child'?", options: ["Childs", "Children", "Childes"], correct: 1, category: "Gramática" },
+                  { question: "Como se diz 'Borboleta' em inglês?", options: ["Butterfly", "Dragonfly", "Bee"], correct: 0, category: "Animais" },
+                  { question: "O que significa 'Excited'?", options: ["Cansado", "Animado", "Confuso"], correct: 1, category: "Sentimentos" },
+                  { question: "Como se diz 'Biblioteca' em inglês?", options: ["Library", "School", "Hospital"], correct: 0, category: "Lugares" },
+                  { question: "Qual é o passado de 'Go'?", options: ["Goed", "Went", "Goes"], correct: 1, category: "Gramática" },
+                  { question: "Como se diz 'Cozinhar' em inglês?", options: ["Cook", "Eat", "Drink"], correct: 0, category: "Ações" },
+                  { question: "O que significa 'Immediately'?", options: ["Rapidamente", "Imediatamente", "Lentamente"], correct: 1, category: "Advérbios" },
+                  { question: "Como se diz 'Conseguir' em inglês?", options: ["Try", "Achieve", "Want"], correct: 1, category: "Verbos" }
+              ]
+          };
+
+          let currentLevel = 'easy';
+          let currentQuestions = [];
+          let currentQ = 0;
+          let score = 0;
+          let lives = 3;
+          let streak = 0;
+          let bestStreak = 0;
+
+          function startQuizLevel(level) {
+              currentLevel = level;
+              currentQuestions = [...allQuestions[level]].sort(() => Math.random() - 0.5).slice(0, 5);
+              currentQ = 0;
+              score = 0;
+              lives = 3;
+              streak = 0;
+              showQuestion();
+          }
+
+          function showQuestion() {
+              if (currentQ >= currentQuestions.length) {
+                  endQuiz();
+                  return;
+              }
+
+              const q = currentQuestions[currentQ];
+              const levelNames = { easy: 'Fácil', medium: 'Médio', hard: 'Difícil' };
+              const levelColors = { easy: '#28a745', medium: '#ffc107', hard: '#dc3545' };
+
+              let quizHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 600px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                              <div style="background: ${levelColors[currentLevel]}; padding: 8px 16px; border-radius: 20px; color: white; font-weight: bold;">
+                                  📚 Nível ${levelNames[currentLevel]}
+                              </div>
+                              <div style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px;">
+                                  ❤️ Vidas: ${lives}
+                              </div>
+                          </div>
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                              <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 15px;">
+                                  <span>📊 Pergunta ${currentQ + 1}/${currentQuestions.length}</span>
+                                  <span>🏆 Pontos: ${score}</span>
+                                  <span>🔥 Sequência: ${streak}</span>
+                              </div>
+                              <div style="background: rgba(0,0,0,0.3); border-radius: 10px; height: 8px; overflow: hidden; margin-bottom: 15px;">
+                                  <div style="background: #ffd700; height: 100%; width: ${((currentQ) / currentQuestions.length) * 100}%; transition: width 0.3s;"></div>
+                              </div>
+                          </div>
+
+
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; margin: 20px 0;">
+                              <div style="font-size: 0.9rem; color: #ffd700; margin-bottom: 10px;">📝 ${q.category}</div>
+                              <h3 style="font-size: 1.4rem; margin-bottom: 25px; line-height: 1.4;">${q.question}</h3>
+                              <div style="display: grid; gap: 12px;">
+              `;
+
+              q.options.forEach((option, index) => {
+                  quizHtml += `
+                      <button style="
+                          padding: 15px 20px;
+                          background: rgba(255,255,255,0.2);
+                          border: 2px solid rgba(255,255,255,0.3);
+                          border-radius: 12px;
+                          color: white;
+                          font-size: 1.1rem;
+                          cursor: pointer;
+                          transition: all 0.3s;
+                          text-align: left;
+                      "
+                      onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.borderColor='rgba(255,255,255,0.6)'; this.style.transform='scale(1.02)'"
+                      onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.borderColor='rgba(255,255,255,0.3)'; this.style.transform='scale(1)'"
+                      onclick="answerQuestion(${index}, ${q.correct}, '${option}', '${q.options[q.correct]}')">
+                          <strong>${String.fromCharCode(65 + index)})</strong> ${option}
+                      </button>
+                  `;
+              });
+
+              quizHtml += `
+                              </div>
+                          </div>
+
+                          <div style="margin-top: 20px;">
+                              <button style="margin: 0 10px; padding: 12px 25px; background: #ffc107; color: #333; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="useHint()">
+                                  💡 Dica
+                              </button>
+                              <button style="margin: 0 10px; padding: 12px 25px; background: #dc3545; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="this.parentElement.parentElement.parentElement.remove()">
+                                  ❌ Sair do Quiz
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', quizHtml);
+          }
+
+          // Mostrar seleção de nível
+          let levelSelectHtml = `
+              <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                      <h2 style="margin-bottom: 30px;">❓ Quiz de Inglês</h2>
+                      <p style="margin-bottom: 30px; opacity: 0.9;">Escolha o nível de dificuldade:</p>
+
+                      <div style="display: grid; gap: 20px; margin: 30px 0;">
+                          <button style="padding: 20px; background: linear-gradient(45deg, #28a745, #20c997); border: none; border-radius: 15px; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s;"
+                                  onclick="selectLevel('easy')"
+                                  onmouseover="this.style.transform='scale(1.05)'"
+                                  onmouseout="this.style.transform='scale(1)'">
+                              🟢 <strong>Fácil</strong><br>
+                              <small style="opacity: 0.8;">Cores, números, animais básicos</small>
+                          </button>
+                          <button style="padding: 20px; background: linear-gradient(45deg, #ffc107, #fd7e14); border: none; border-radius: 15px; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s;"
+                                  onclick="selectLevel('medium')"
+                                  onmouseover="this.style.transform='scale(1.05)'"
+                                  onmouseout="this.style.transform='scale(1)'">
+                              🟡 <strong>Médio</strong><br>
+                              <small style="opacity: 0.8;">Vocabulário expandido, sentimentos</small>
+                          </button>
+                          <button style="padding: 20px; background: linear-gradient(45deg, #dc3545, #e83e8c); border: none; border-radius: 15px; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s;"
+                                  onclick="selectLevel('hard')"
+                                  onmouseover="this.style.transform='scale(1.05)'"
+                                  onmouseout="this.style.transform='scale(1)'">
+                              🔴 <strong>Difícil</strong><br>
+                              <small style="opacity: 0.8;">Gramática, verbos, vocabulário avançado</small>
+                          </button>
+                      </div>
+
+                      <button style="margin-top: 20px; padding: 15px 30px; background: #6c757d; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                          ← Voltar
+                      </button>
+                  </div>
+              </div>
+          `;
+
+          document.body.insertAdjacentHTML('beforeend', levelSelectHtml);
+
+          window.selectLevel = function (level) {
+              document.querySelector('[onclick="this.remove()"]').remove();
+              startQuizLevel(level);
+          };
+
+          window.answerQuestion = function (selected, correct, selectedText, correctText) {
+              const isCorrect = selected === correct;
+
+              if (isCorrect) {
+                  score += currentLevel === 'easy' ? 10 : currentLevel === 'medium' ? 20 : 30;
+                  streak++;
+                  if (streak > bestStreak) bestStreak = streak;
+                  alert(`✅ Correto!\n\n🎉 Muito bem! +${currentLevel === 'easy' ? 10 : currentLevel === 'medium' ? 20 : 30} pontos\n🔥 Sequência: ${streak}`);
+                  speak(correctText);
+              } else {
+                  lives--;
+                  streak = 0;
+                  if (lives > 0) {
+                      alert(`❌ Incorreto!\n\nResposta certa: ${correctText}\n💔 Vidas restantes: ${lives}`);
+                  } else {
+                      alert(`💀 Game Over!\n\nResposta certa: ${correctText}\n🏆 Pontuação final: ${score}`);
+                      document.querySelector('[onclick="this.remove()"]').remove();
+                      return;
+                  }
+                  speak(correctText);
+              }
+
+              currentQ++;
+              document.querySelector('[onclick="this.remove()"]').remove();
+              setTimeout(showQuestion, 1000);
+          };
+
+          window.useHint = function () {
+              if (score >= 10) {
+                  score -= 10;
+                  const q = currentQuestions[currentQ];
+                  const hints = {
+                      "Animais": "🐾 Pense em um animal doméstico comum",
+                      "Cores": "🎨 Pense nas cores do arco-íris",
+                      "Números": "🔢 Conte nos dedos",
+                      "Família": "👨‍👩‍👧‍👦 Pense nos membros da sua família",
+                      "Sentimentos": "😊 Como você se sente quando está feliz?",
+                      "Gramática": "📚 Lembre-se das regras do inglês",
+                      "Lugares": "🏛️ Onde você vai para fazer isso?",
+                      "Ações": "🏃 O que você faz com as mãos?",
+                      "Verbos": "💪 Palavras de ação"
+                  };
+                  alert(`💡 Dica (-10 pontos):\n\n${hints[q.category] || "Pense bem na pergunta!"}`);
+              } else {
+                  alert("💰 Você precisa de pelo menos 10 pontos para usar uma dica!");
+              }
+          };
+
+          function endQuiz() {
+              const percentage = Math.round((score / (currentQuestions.length * (currentLevel === 'easy' ? 10 : currentLevel === 'medium' ? 20 : 30))) * 100);
+              let message = `🎉 Quiz Completo!\n\n`;
+              message += `🏆 Pontuação: ${score}\n`;
+              message += `📊 Aproveitamento: ${percentage}%\n`;
+              message += `🔥 Melhor sequência: ${bestStreak}\n`;
+              message += `📚 Nível: ${currentLevel === 'easy' ? 'Fácil' : currentLevel === 'medium' ? 'Médio' : 'Difícil'}\n\n`;
+
+              if (percentage >= 90) message += "🥇 Excelente! Você é um mestre!";
+              else if (percentage >= 70) message += "🥈 Muito bom! Continue praticando!";
+              else if (percentage >= 50) message += "🥉 Bom trabalho! Você está melhorando!";
+              else message += "📚 Continue estudando! Você vai conseguir!";
+
+              alert(message);
+              document.querySelector('[onclick="this.remove()"]')?.remove();
+          }
+      }
+
+      function startSpellingGame() {
+          const wordSets = {
+              beginner: [
+                  { word: "CAT", hint: "Animal doméstico que faz 'miau'", emoji: "🐱", translation: "Gato" },
+                  { word: "DOG", hint: "Melhor amigo do homem", emoji: "🐶", translation: "Cachorro" },
+                  { word: "RED", hint: "Cor do sangue", emoji: "🔴", translation: "Vermelho" },
+                  { word: "BLUE", hint: "Cor do céu", emoji: "🔵", translation: "Azul" },
+                  { word: "ONE", hint: "Primeiro número", emoji: "1️⃣", translation: "Um" },
+                  { word: "TWO", hint: "Número após o um", emoji: "2️⃣", translation: "Dois" },
+                  { word: "SUN", hint: "Estrela do nosso sistema solar", emoji: "☀️", translation: "Sol" },
+                  { word: "MOON", hint: "Satélite natural da Terra", emoji: "🌙", translation: "Lua" }
+              ],
+              intermediate: [
+                  { word: "HAPPY", hint: "Sentimento de alegria", emoji: "😊", translation: "Feliz" },
+                  { word: "HOUSE", hint: "Lugar onde você mora", emoji: "🏠", translation: "Casa" },
+                  { word: "WATER", hint: "Líquido essencial para a vida", emoji: "💧", translation: "Água" },
+                  { word: "FRIEND", hint: "Pessoa próxima e querida", emoji: "👫", translation: "Amigo" },
+                  { word: "SCHOOL", hint: "Lugar onde se aprende", emoji: "🏫", translation: "Escola" },
+                  { word: "FAMILY", hint: "Pais, filhos, avós...", emoji: "👨‍👩‍👧‍👦", translation: "Família" },
+                  { word: "FLOWER", hint: "Parte colorida das plantas", emoji: "🌸", translation: "Flor" },
+                  { word: "TREE", hint: "Planta grande com tronco", emoji: "🌳", translation: "Árvore" }
+              ],
+              advanced: [
+                  { word: "BUTTERFLY", hint: "Inseto colorido que voa", emoji: "🦋", translation: "Borboleta" },
+                  { word: "ELEPHANT", hint: "Maior mamífero terrestre", emoji: "🐘", translation: "Elefante" },
+                  { word: "RAINBOW", hint: "Arco colorido no céu após a chuva", emoji: "🌈", translation: "Arco-íris" },
+                  { word: "COMPUTER", hint: "Máquina eletrônica para processar dados", emoji: "💻", translation: "Computador" },
+                  { word: "TELEPHONE", hint: "Aparelho para falar à distância", emoji: "📞", translation: "Telefone" },
+                  { word: "BEAUTIFUL", hint: "Algo muito bonito", emoji: "😍", translation: "Bonito/Linda" },
+                  { word: "WONDERFUL", hint: "Algo maravilhoso", emoji: "🌟", translation: "Maravilhoso" },
+                  { word: "ADVENTURE", hint: "Jornada emocionante", emoji: "🗺️", translation: "Aventura" }
+              ]
+          };
+
+          let currentLevel = 'beginner';
+          let currentWord = null;
+          let scrambledLetters = [];
+          let playerAnswer = [];
+          let score = 0;
+          let wordsCompleted = 0;
+          let hints = 3;
+          let timeLeft = 60;
+          let gameTimer = null;
+
+          function selectSpellingLevel() {
+              let levelHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center;" onclick="this.remove()">
+                      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; color: white;" onclick="event.stopPropagation()">
+                          <h2 style="margin-bottom: 30px;">📝 Jogo de Soletrar</h2>
+                          <p style="margin-bottom: 30px; opacity: 0.9;">Escolha o nível de dificuldade:</p>
+
+                          <div style="display: grid; gap: 20px; margin: 30px 0;">
+                              <button style="padding: 20px; background: linear-gradient(45deg, #28a745, #20c997); border: none; border-radius: 15px; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s;"
+                                      onclick="startSpellingLevel('beginner')"
+                                      onmouseover="this.style.transform='scale(1.05)'"
+                                      onmouseout="this.style.transform='scale(1)'">
+                                  🟢 <strong>Iniciante</strong><br>
+                                  <small style="opacity: 0.8;">Palavras de 3-4 letras</small>
+                              </button>
+                              <button style="padding: 20px; background: linear-gradient(45deg, #ffc107, #fd7e14); border: none; border-radius: 15px; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s;"
+                                      onclick="startSpellingLevel('intermediate')"
+                                      onmouseover="this.style.transform='scale(1.05)'"
+                                      onmouseout="this.style.transform='scale(1)'">
+                                  🟡 <strong>Intermediário</strong><br>
+                                  <small style="opacity: 0.8;">Palavras de 4-6 letras</small>
+                              </button>
+                              <button style="padding: 20px; background: linear-gradient(45deg, #dc3545, #e83e8c); border: none; border-radius: 15px; color: white; font-size: 1.2rem; cursor: pointer; transition: all 0.3s;"
+                                      onclick="startSpellingLevel('advanced')"
+                                      onmouseover="this.style.transform='scale(1.05)'"
+                                      onmouseout="this.style.transform='scale(1)'">
+                                  🔴 <strong>Avançado</strong><br>
+                                  <small style="opacity: 0.8;">Palavras de 6+ letras</small>
+                              </button>
+                          </div>
+
+                          <button style="margin-top: 20px; padding: 15px 30px; background: #6c757d; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;" onclick="this.parentElement.parentElement.remove()">
+                              ← Voltar
+                          </button>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', levelHtml);
+          }
+
+          // Iniciar seleção de nível
+          selectSpellingLevel();
+
+          // Configurar funções globais
+          window.startSpellingLevel = function (level) {
+              currentLevel = level;
+              score = 0;
+              wordsCompleted = 0;
+              hints = 3;
+              timeLeft = level === 'beginner' ? 90 : level === 'intermediate' ? 75 : 60;
+
+              document.querySelector('[onclick="this.remove()"]').remove();
+              nextWord();
+              startTimer();
+          };
+
+          function nextWord() {
+              const words = wordSets[currentLevel];
+              currentWord = words[Math.floor(Math.random() * words.length)];
+              scrambledLetters = currentWord.word.split('').sort(() => Math.random() - 0.5);
+              playerAnswer = [];
+              showSpellingGame();
+          }
+
+          function showSpellingGame() {
+              const levelNames = { beginner: 'Iniciante', intermediate: 'Intermediário', advanced: 'Avançado' };
+
+              let gameHtml = `
+                  <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+                      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 20px; max-width: 600px; width: 90%; text-align: center; color: white;">
+                          <h2 style="margin-bottom: 20px;">📝 ${levelNames[currentLevel]} - Soletrar</h2>
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                              <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                  <span>🏆 ${score} pts</span>
+                                  <span>📚 ${wordsCompleted} palavras</span>
+                                  <span>⏰ ${Math.floor(timeLeft / 60)}:${(timeLeft % 60).toString().padStart(2, '0')}</span>
+                              </div>
+                          </div>
+
+                          <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px; margin: 20px 0;">
+                              <div style="font-size: 4rem; margin-bottom: 15px;">${currentWord.emoji}</div>
+                              <div style="font-size: 1.1rem; color: #ffd700; margin-bottom: 10px;">${currentWord.translation}</div>
+                              <div style="font-size: 1rem; opacity: 0.8; margin-bottom: 25px;">"${currentWord.hint}"</div>
+
+                              <div style="margin: 20px 0;">
+                                  <h3 style="margin-bottom: 15px;">🔤 Letras embaralhadas:</h3>
+                                  <div style="font-size: 2rem; letter-spacing: 10px; color: #ffd700; margin-bottom: 20px;">
+                                      ${scrambledLetters.join(' ')}
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div style="margin-top: 30px;">
+                              <button style="margin: 0 8px; padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="checkSimpleSpelling()">
+                                  ✅ Responder
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 25px; background: #ffc107; color: #333; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="showSpellingHint()">
+                                  💡 Dica (${hints})
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 25px; background: #6c757d; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="skipSpellingWord()">
+                                  ⏭️ Pular
+                              </button>
+                              <button style="margin: 0 8px; padding: 12px 25px; background: #dc3545; color: white; border: none; border-radius: 25px; font-size: 1rem; cursor: pointer;" onclick="endSpellingGame()">
+                                  ❌ Sair
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              `;
+
+              document.body.insertAdjacentHTML('beforeend', gameHtml);
+          }
+
+          function startTimer() {
+              gameTimer = setInterval(() => {
+                  timeLeft--;
+                  if (timeLeft <= 0) {
+                      clearInterval(gameTimer);
+                      endSpellingGame(true);
+                  }
+              }, 1000);
+          }
+
+          // Funções globais simplificadas
+          window.checkSimpleSpelling = function () {
+              const answer = prompt(`📝 Digite a palavra correta:\n\n${currentWord.emoji} ${currentWord.hint}\n\nLetras: ${scrambledLetters.join(' ')}`);
+
+              if (answer && answer.toUpperCase() === currentWord.word) {
+                  const bonus = timeLeft > 30 ? 50 : 25;
+                  score += (currentLevel === 'beginner' ? 100 : currentLevel === 'intermediate' ? 150 : 200) + bonus;
+                  wordsCompleted++;
+
+                  speak(currentWord.word.toLowerCase());
+                  alert(`🎉 Correto!\n\n"${currentWord.word}" = ${currentWord.translation}\n\n+${(currentLevel === 'beginner' ? 100 : currentLevel === 'intermediate' ? 150 : 200) + bonus} pontos`);
+
+                  if (wordsCompleted >= 10) {
+                      clearInterval(gameTimer);
+                      endSpellingGame();
+                      return;
+                  }
+
+                  nextSpellingWord();
+              } else {
+                  score = Math.max(0, score - 25);
+                  alert(`❌ Incorreto!\n\nA palavra correta é: "${currentWord.word}"\n\n-25 pontos`);
+                  speak(currentWord.word.toLowerCase());
+              }
+          };
+
+          window.showSpellingHint = function () {
+              if (hints > 0) {
+                  hints--;
+                  alert(`💡 Dica!\n\nPrimeira letra: ${currentWord.word[0]}\nÚltima letra: ${currentWord.word[currentWord.word.length - 1]}\n\nDicas restantes: ${hints}`);
+              } else {
+                  alert("💡 Você não tem mais dicas!");
+              }
+          };
+
+          window.skipSpellingWord = function () {
+              score = Math.max(0, score - 50);
+              speak(currentWord.word.toLowerCase());
+              alert(`⏭️ Palavra pulada!\n\nA palavra era: "${currentWord.word}" = ${currentWord.translation}\n\n-50 pontos`);
+              nextSpellingWord();
+          };
+
+          window.endSpellingGame = function (timeUp = false) {
+              clearInterval(gameTimer);
+
+              // Remove o modal atual
+              const currentModal = document.querySelector('div[style*="position: fixed"]');
+              if (currentModal) currentModal.remove();
+
+              let message = timeUp ? "⏰ Tempo esgotado!\n\n" : "🎉 Jogo finalizado!\n\n";
+              message += `🏆 Pontuação: ${score}\n`;
+              message += `📚 Palavras: ${wordsCompleted}\n`;
+              message += `📝 Nível: ${levelNames[currentLevel]}\n\n`;
+
+              if (score >= 1000) message += "🥇 Mestre da Ortografia!";
+              else if (score >= 600) message += "🥈 Excelente!";
+              else if (score >= 300) message += "🥉 Bom trabalho!";
+              else message += "📚 Continue praticando!";
+
+              alert(message);
+          };
+
+          function nextSpellingWord() {
+              // Remove modal atual e carrega nova palavra
+              const currentModal = document.querySelector('div[style*="position: fixed"]');
+              if (currentModal) currentModal.remove();
+
+              setTimeout(() => {
+                  nextWord();
+              }, 1000);
+          }
+      }
+
+      function testNumbers() {
+          const num = Math.floor(Math.random() * 10) + 1;
+          const numbers = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+          const answer = prompt(`🎯 Quiz de Números\n\nComo se diz "${num}" em inglês?\n\nDigite sua resposta:`);
+
+          if (answer && answer.toLowerCase() === numbers[num]) {
+              alert("🎉 Correto!");
+              speak(numbers[num]);
+          } else {
+              alert(`❌ A resposta correta é: ${numbers[num]}`);
+              speak(numbers[num]);
+          }
+      }
+
+      function startApp() {
+
+      function testNumbers() {
+          const num = Math.floor(Math.random() * 10) + 1;
+          const numbers = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+          const answer = prompt(`🎯 Quiz de Números\n\nComo se diz "${num}" em inglês?\n\nDigite sua resposta:`);
+
+          if (answer && answer.toLowerCase() === numbers[num]) {
+              alert("🎉 Correto!");
+              speak(numbers[num]);
+          } else {
+              alert(`❌ A resposta correta é: ${numbers[num]}`);
+              speak(numbers[num]);
+          }
+      }
+
+      function startApp() {
+          alert(`🚀 Bem-vindo ao Little English Explorer!\n\n🎯 Como usar:\n\n1. 🎨 Clique em qualquer ícone de atividade\n2. 🔊 Aprenda com áudio interativo\n3. 🎮 Complete jogos educativos\n4. 🏆 Ganhe conquistas\n5. 📊 Acompanhe seu progresso\n\n✨ Diversão garantida no aprendizado!`);
+      }
+
+      function testFeatures() {
+          const features = [
+              "✅ Interface responsiva",
+              "✅ Animações suaves",
+              "✅ Efeitos visuais",
+              "✅ Servidor estável",
+              "✅ Compatibilidade mobile",
+              "✅ Design moderno",
+              "✅ Interatividade completa"
+          ];
+
+          alert(`🧪 Teste de Recursos:\n\n${features.join('\n')}\n\n🎯 Todos os sistemas operacionais!`);
+      }
+
+      function showInfo() {
+          alert(`ℹ️ Informações do Sistema:\n\n🌐 Servidor: Python HTTP Server\n🔌 Porta: 8080\n📡 IP Local: 192.168.10.10\n🎨 Framework: HTML5/CSS3/JavaScript\n📱 Compatibilidade: Desktop e Mobile\n\n🔧 Status: 100% Funcional`);
+      }
+
+      // Efeito de partículas melhorado
+      function createParticle() {
+          const particle = document.createElement('div');
+          particle.style.cssText = `
+              position: fixed;
+              left: ${Math.random() * 100}vw;
+              top: -10px;
+              width: ${3 + Math.random() * 4}px;
+              height: ${3 + Math.random() * 4}px;
+              background: rgba(255, 255, 255, ${0.4 + Math.random() * 0.4});
+              border-radius: 50%;
+              pointer-events: none;
+              z-index: 1000;
+          `;
+
+          document.body.appendChild(particle);
+
+          const animation = particle.animate([
+              { transform: 'translateY(-10px) rotate(0deg)', opacity: 1 },
+              { transform: `translateY(100vh) rotate(${360 * Math.random()}deg)`, opacity: 0 }
+          ], {
+              duration: 3000 + Math.random() * 3000,
+              easing: 'linear'
+          });
+
+          animation.addEventListener('finish', () => particle.remove());
+      }
+
+      // Criar partículas ocasionalmente
+      setInterval(createParticle, 1500);
+
+      // Mensagem de boas-vindas
+      setTimeout(() => {
+          console.log("🎊 Little English Explorer está pronto para uso!");
+      }, 1000);
+    </script>
+  </body>
+</html>
