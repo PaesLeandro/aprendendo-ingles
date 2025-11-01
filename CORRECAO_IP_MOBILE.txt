@@ -1,0 +1,51 @@
+🔧 CORREÇÃO DE IP PARA REDE MÓVEL CELULAR 🔧
+===============================================
+
+❌ IP INCORRETO QUE NÃO FUNCIONA:
+   http://192.168.10.10:8080/main.html
+
+✅ IPs CORRETOS PARA USAR NO CELULAR:
+   📱 http://192.168.10.5:8080/main.html  (WiFi Principal)
+   📱 http://192.168.56.1:8080/main.html  (Ethernet)
+
+🔍 DIAGNÓSTICO ATUAL:
+- Servidor Python ativo na porta 8080 ✅
+- Bind 0.0.0.0 configurado para aceitar conexões externas ✅
+- Interface responsiva otimizada para móveis ✅
+
+📱 INSTRUÇÕES PARA CELULAR:
+
+1. CONECTE O CELULAR NA MESMA REDE WIFI
+   - Mesma rede WiFi que o computador
+
+2. ABRA O NAVEGADOR DO CELULAR
+   - Chrome, Firefox, Safari, etc.
+
+3. DIGITE O IP CORRETO:
+   http://192.168.10.5:8080/main.html
+
+4. SE NÃO FUNCIONAR, TENTE O SEGUNDO IP:
+   http://192.168.56.1:8080/main.html
+
+🔥 CONFIGURAR FIREWALL (SE NECESSÁRIO):
+Execute como Administrador:
+   configurar_firewall.bat
+
+🧪 TESTAR CONECTIVIDADE:
+Execute para diagnóstico:
+   testar_mobile.bat
+
+⚠️ IMPORTANTE:
+- O IP 192.168.10.10 NÃO EXISTE nesta rede
+- O IP correto é 192.168.10.5
+- Certifique-se que celular e computador estão na mesma WiFi
+
+🌐 VERIFICAÇÃO DE REDE:
+- WiFi Principal: 192.168.10.5 (Gateway: 192.168.10.1)
+- Ethernet: 192.168.56.1
+- Servidor respondendo em ambos os IPs
+
+═══════════════════════════════════════════════════════════════
+✅ USE: http://192.168.10.5:8080/main.html
+❌ NÃO USE: http://192.168.10.10:8080/main.html
+═══════════════════════════════════════════════════════════════

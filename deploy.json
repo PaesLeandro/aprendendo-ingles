@@ -1,0 +1,16 @@
+{
+  "name": "Deploy Little English Explorer",
+  "description": "Script de deploy para o Netlify",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "netlify deploy --prod --dir=dist",
+    "deploy:preview": "netlify deploy --dir=dist"
+  },
+  "instructions": [
+    "1. Install Netlify CLI: npm install -g netlify-cli",
+    "2. Login to Netlify: netlify login",
+    "3. Initialize site: netlify init",
+    "4. Deploy preview: npm run deploy:preview",
+    "5. Deploy production: npm run deploy"
+  ]
+}

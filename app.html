@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little English Explorer - Teste</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+        }
+
+        .emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            background: rgba(0, 255, 0, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .urls {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .activities {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .activity {
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .activity:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="emoji">🎉</div>
+        <h1>Little English Explorer</h1>
+        <p style="font-size: 1.3rem; margin-bottom: 30px;">
+            Aplicativo educacional funcionando!
+        </p>
+
+        <div class="activities">
+            <div class="activity">🎨</div>
+            <div class="activity">🐸</div>
+            <div class="activity">🔢</div>
+            <div class="activity">👨‍👩‍👧‍👦</div>
+            <div class="activity">🎮</div>
+            <div class="activity">🎵</div>
+            <div class="activity">🏆</div>
+        </div>
+
+        <div class="status">
+            <h3>✅ Status do Servidor</h3>
+            <p>Servidor HTTP ativo e funcionando</p>
+        </div>
+
+        <div class="urls">
+            <h3>📱 Acesso</h3>
+            <p><strong>Computador:</strong> http://localhost:3001/game.html</p>
+            <p><strong>Celular:</strong> http://192.168.10.10:3001/game.html</p>
+        </div>
+
+        <div style="margin-top: 30px; font-size: 1.1rem; opacity: 0.9;">
+            <p>🎯 Se você vê esta página, o servidor está funcionando!</p>
+            <p>🔥 Pronto para aprender inglês brincando!</p>
+        </div>
+    </div>
+
+    <script>
+        console.log("🎉 Little English Explorer carregado com sucesso!");
+
+        // Adicionar interatividade aos ícones
+        document.querySelectorAll('.activity').forEach(activity => {
+            activity.addEventListener('click', function () {
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1.0)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+
+</html>
