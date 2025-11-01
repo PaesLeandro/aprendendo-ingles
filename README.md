@@ -140,8 +140,8 @@ little-english-explorer/
 
 ### Clonando o Repositório
 ```bash
-git clone https://github.com/seu-usuario/little-english-explorer.git
-cd little-english-explorer
+git clone https://github.com/PaesLeandro/little-english.git
+cd little-english
 ```
 
 ### Instalação das Dependências
@@ -336,8 +336,8 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 **Feito com ❤️ para tornar o aprendizado de inglês divertido!**
 
-[🌟 Star no GitHub](https://github.com/seu-usuario/little-english-explorer) | 
-[🐛 Reportar Bug](https://github.com/seu-usuario/little-english-explorer/issues) | 
-[💡 Sugerir Feature](https://github.com/seu-usuario/little-english-explorer/issues)
+[🌟 Star no GitHub](https://github.com/PaesLeandro/little-english) | 
+[🐛 Reportar Bug](https://github.com/PaesLeandro/little-english/issues) | 
+[💡 Sugerir Feature](https://github.com/PaesLeandro/little-english/issues)
 
 </div>
