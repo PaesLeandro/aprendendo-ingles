@@ -7,27 +7,35 @@ Uma aplicação PWA moderna e interativa para ensinar inglês para crianças atr
 ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF?style=for-the-badge&logo=vite)
 ![PWA](https://img.shields.io/badge/PWA-Ready-FF6B6B?style=for-the-badge)
 
+<!-- Vercel badge (placeholder) - substitua a URL abaixo pela URL real do seu deploy -->
+
+[![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?style=for-the-badge&logo=vercel)](https://your-deploy-url.vercel.app)
+
 ## ✨ Características Principais
 
 ### 🎮 Gamificação Avançada
+
 - **Sistema de XP e Níveis**: Progressão motivante com recompensas
 - **Conquistas Desbloqueáveis**: 20+ achievements com diferentes raridades
 - **Streaks e Estatísticas**: Acompanhamento detalhado do progresso
 - **Notificações Animadas**: Feedback visual impressionante
 
 ### 🎨 Interface Moderna
+
 - **Animações Fluidas**: Powered by Framer Motion
 - **Design Responsivo**: Funciona perfeitamente em todos os dispositivos
 - **Tema Colorido**: Interface atrativa para crianças
 - **Componentes Reutilizáveis**: Arquitetura modular e escalável
 
 ### 🔊 Sistema de Áudio Avançado
+
 - **Áudio Profissional**: Pronunciação nativa para aprendizado correto
 - **Speech Synthesis**: Fallback inteligente para todos os textos
 - **Feedback Sonoro**: Efeitos sonoros para interações
 - **Controles de Volume**: Configurações personalizáveis
 
 ### 📱 PWA (Progressive Web App)
+
 - **Offline First**: Funciona sem conexão
 - **Instalável**: Pode ser instalada como app nativo
 - **Service Worker**: Cache inteligente para performance
@@ -36,28 +44,33 @@ Uma aplicação PWA moderna e interativa para ensinar inglês para crianças atr
 ## 🚀 Tecnologias Utilizadas
 
 ### Frontend Core
+
 - **React 19.1.0** - UI Library com componentes modernos
 - **Vite 6.3.5** - Build tool super rápido
 - **Tailwind CSS** - Utility-first CSS framework
 - **Framer Motion** - Animações e transições avançadas
 
 ### Estado e Dados
+
 - **Zustand** - State management leve e moderno
 - **Local Storage** - Persistência de dados offline
 - **Context API** - Compartilhamento de estado
 
 ### Áudio e Mídia
+
 - **Web Audio API** - Processamento de áudio avançado
 - **Speech Synthesis** - Text-to-speech nativo
 - **Media Session API** - Controles de mídia do sistema
 
 ### Desenvolvimento
+
 - **TypeScript** - Type safety (configurado para JSX)
 - **ESLint + Prettier** - Code quality e formatação
 - **Husky + lint-staged** - Git hooks para qualidade
 - **Jest + React Testing Library** - Testes unitários
 
 ### Build e Deploy
+
 - **Vite PWA Plugin** - Service worker automático
 - **Netlify** - Deploy e hosting otimizado
 - **GitHub Actions** - CI/CD pipeline
@@ -105,6 +118,7 @@ little-english-explorer/
 ## 🎯 Funcionalidades Implementadas
 
 ### ✅ Sistema de Gamificação
+
 - [x] Sistema de XP e níveis
 - [x] Conquistas com diferentes raridades
 - [x] Streaks diários
@@ -112,6 +126,7 @@ little-english-explorer/
 - [x] Notificações de conquista animadas
 
 ### ✅ Interface Moderna
+
 - [x] Componentes animados com Framer Motion
 - [x] Design system consistente
 - [x] Responsividade completa
@@ -119,6 +134,7 @@ little-english-explorer/
 - [x] Navigation com progress bars
 
 ### ✅ Sistema de Áudio
+
 - [x] Reprodução de áudio profissional
 - [x] Fallback com Speech Synthesis
 - [x] Controles de volume
@@ -126,6 +142,7 @@ little-english-explorer/
 - [x] Feedback sonoro em interações
 
 ### ✅ PWA Features
+
 - [x] Service Worker configurado
 - [x] Manifest para instalação
 - [x] Cache de recursos
@@ -135,16 +152,19 @@ little-english-explorer/
 ## 🛠️ Instalação e Desenvolvimento
 
 ### Pré-requisitos
-- Node.js 18+ 
+
+- Node.js 18+
 - npm 9+ ou pnpm
 
 ### Clonando o Repositório
+
 ```bash
 git clone https://github.com/PaesLeandro/little-english.git
 cd little-english
 ```
 
 ### Instalação das Dependências
+
 ```bash
 # Com npm
 npm install
@@ -154,6 +174,7 @@ pnpm install
 ```
 
 ### Executando em Desenvolvimento
+
 ```bash
 # Servidor de desenvolvimento
 npm run dev
@@ -163,6 +184,7 @@ npm run preview
 ```
 
 ### Build para Produção
+
 ```bash
 # Build otimizado
 npm run build
@@ -172,6 +194,7 @@ npm run netlify:build
 ```
 
 ### Executando Testes
+
 ```bash
 # Testes unitários
 npm test
@@ -184,6 +207,7 @@ npm run test:watch
 ```
 
 ### Linting e Formatação
+
 ```bash
 # Verificar código
 npm run lint
@@ -198,6 +222,7 @@ npm run format
 ## 🎮 Como Usar
 
 ### Para Crianças
+
 1. **Acesse a aplicação** no navegador ou instale como PWA
 2. **Escolha uma atividade** na tela inicial
 3. **Complete desafios** para ganhar XP e moedas
@@ -205,6 +230,7 @@ npm run format
 5. **Pratique inglês** de forma divertida e interativa
 
 ### Para Desenvolvedores
+
 1. **Clone e instale** o projeto
 2. **Execute em desenvolvimento** para ver mudanças em tempo real
 3. **Crie novos componentes** na pasta `src/components/ui/`
@@ -215,6 +241,7 @@ npm run format
 ## 🎨 Personalização
 
 ### Adicionando Novas Atividades
+
 ```javascript
 // src/store/gameStore.js
 const newActivity = {
@@ -227,11 +254,12 @@ const newActivity = {
   unlockRequirement: ['colors'], // atividades necessárias
   content: {
     // conteúdo específico da atividade
-  }
+  },
 }
 ```
 
 ### Criando Novos Componentes
+
 ```jsx
 // src/components/ui/NewComponent.jsx
 import { motion } from 'framer-motion'
@@ -252,6 +280,7 @@ export default NewComponent
 ```
 
 ### Adicionando Conquistas
+
 ```javascript
 // src/hooks/useGamification.js
 const achievements = [
@@ -262,20 +291,22 @@ const achievements = [
     icon: '🏆',
     rarity: 'common', // common, rare, epic, legendary
     xpReward: 100,
-    condition: (stats) => stats.activitiesCompleted >= 5
-  }
+    condition: (stats) => stats.activitiesCompleted >= 5,
+  },
 ]
 ```
 
 ## 🚀 Deploy
 
 ### Netlify (Recomendado)
+
 1. **Conecte seu repositório** no Netlify
 2. **Configure o build command**: `npm run netlify:build`
 3. **Configure o publish directory**: `dist`
 4. **Deploy automático** a cada push
 
 ### Manual
+
 ```bash
 # Build da aplicação
 npm run build
@@ -286,12 +317,14 @@ npm run build
 ## 📊 Métricas e Analytics
 
 ### Performance
+
 - **Lighthouse Score**: 95+ em todas as categorias
 - **Core Web Vitals**: Otimizado para LCP, FID, CLS
 - **Bundle Size**: Otimizado com code splitting
 - **Cache Strategy**: Recursos estáticos com cache longo
 
 ### Cobertura de Testes
+
 - **Componentes**: 80%+ cobertura
 - **Hooks**: 90%+ cobertura
 - **Store**: 95%+ cobertura
@@ -300,6 +333,7 @@ npm run build
 ## 🤝 Contribuindo
 
 ### Como Contribuir
+
 1. **Fork** o projeto
 2. **Crie uma branch** para sua feature (`git checkout -b feature/nova-feature`)
 3. **Commit suas mudanças** (`git commit -m 'Adiciona nova feature'`)
@@ -307,6 +341,7 @@ npm run build
 5. **Abra um Pull Request**
 
 ### Padrões de Código
+
 - Use **ESLint** e **Prettier** configurados
 - Escreva **testes** para novas funcionalidades
 - Siga os **padrões de commit** convencionais
@@ -336,8 +371,8 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 **Feito com ❤️ para tornar o aprendizado de inglês divertido!**
 
-[🌟 Star no GitHub](https://github.com/PaesLeandro/little-english) | 
-[🐛 Reportar Bug](https://github.com/PaesLeandro/little-english/issues) | 
+[🌟 Star no GitHub](https://github.com/PaesLeandro/little-english) |
+[🐛 Reportar Bug](https://github.com/PaesLeandro/little-english/issues) |
 [💡 Sugerir Feature](https://github.com/PaesLeandro/little-english/issues)
 
 </div>
