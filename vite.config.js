@@ -3,11 +3,11 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // Use relative base so the produced `dist` works when opened from
-  // file:// or when served from a subpath. Also safe for Netlify root.
-  base: './',
+  // Use base dinâmico: na Vercel o site roda na raiz '/',
+  // localmente para GitHub Pages mantemos o caminho '/aprendendo-ingles/'
+  base: process.env.VERCEL ? '/' : '/aprendendo-ingles/',
   build: {
-    outDir: 'dist',
-    sourcemap: false
+  outDir: 'dist',
+  sourcemap: false
   }
 })
